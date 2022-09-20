@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+  <title>My first Vue app</title>
+  <script src="https://unpkg.com/vue@2"></script>
+  <script src="https://cdn.tiny.cloud/1/ekjnhz7itvvgp05ree5d2azoz5hobav2pbtzrkvpe7h18rmp/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
+</head>
+<body>
+  <div id="app">
+    <p>
+      <div class="text-input">
+        <div v-for="text in this.texts">
+          <input v-model="text.name" class="header-input" :class="text.heading" :placeholder=text.name>
+          <textarea cols="100%" rows=5 v-model="text.content"></textarea>
+        </div>
+     </div>
+     <div class="product-preview" >
+       <div v-for="text in this.texts">
+          <div v-if="text.content" >
+            <div :class="text.heading">{{ text.name }}</div>
+            <div>{{ text.content }}</div><br>
+          </div>
+      </div>
+    </div>
+      <div class="html-output">{{ htmlText }}
+      </div>
+    </p>
+    </div>
+
+    <script>
+        tinymce.init({
+          selector: 'textarea',
+          menubar: false,
+          plugins: 'lists',
+          toolbar: 'undo redo | bold italic | bullist',
+          browser_spellcheck: true,
+
+        });
+      </script>
+    
+  <script>
+
+    var app = new Vue({
+      el: '#app',
+      data: {
+        texts: {
+          nutshell: { name: "Das Wichtigste in Kürze", content: 'a', heading: 'h2'},
+          details: { name: "Details zu", content: '', heading: 'h2'},
+          specs: { name: "Technische Eigenschaften", content: '', heading: 'h3'},
+          inTheBox: { name: "Lieferumfang", content: '', heading: 'h3'},
+        }
+      },
+  computed: {
+    htmlText: function () {
+      let html = '';
+      for(const text in this.texts){
+        if(this.texts[text].content) {
+          html = html + '<'+ `${this.texts[text].heading}` + '>' + `${this.texts[text].name}` + '</'+ `${this.texts[text].heading}` + '><p>' + `${this.texts[text].content.replace(/\r\n|\r|\n/g,"<br>")}` + '</p><br>';
+        }
+      }
+      return html;
+    }
+  }
+  }
+    )
+  </script>
+  <style lang="scss">
+    #app {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: auto;
+      font-family: Helvetica;
+      grid-template-areas: 
+        "input preview"
+        "html html";
+      color: #2c3e50;
+    }
+    a, button {
+      color: #4fc08d;
+    }
+      .text-input {
+        grid-area: input;
+      }
+      
+      .product-preview {
+        font-family: Open Sans, sans-serif;
+        grid-area: preview;
+        white-space: pre-wrap;
+      }
+      .html-output{
+        font-family: "courier";
+        padding: 100px;
+        grid-area: html
+      }
+      .h2 {
+        font-size: 24px;
+        font-weight: 700;
+      }
+      .h3 {
+        font-size: 14px;
+        font-weight: 700;
+      }
+    button {
+      background: none;
+      border: solid 1px;
+      border-radius: 2em;
+      font: inherit;
+      padding: 0.75em 2em;
+    }
+    </style>
+</body>
+</html>
