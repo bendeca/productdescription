@@ -5,7 +5,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
-      - run: echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add - > /dev/null
+      - run: echo "${{secret.cyon_deployment}}" | tr -d '\r' | ssh-add - > /dev/null
       - run: mkdir -p ~/.ssh
       - run: chmod 700 ~/.ssh
       - run: ssh-keyscan $DEPLOY_IP >> ~/.ssh/known_hosts
