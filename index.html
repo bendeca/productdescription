@@ -6,6 +6,7 @@
 </head>
 <body>
   <div id="app">
+    <div class="header">Veloplus Helper</div>
       <div class="blocks">
           <h1>Textblöcke</h1>
           <span v-for="text in this.blocks">
@@ -88,6 +89,7 @@
       grid-template-rows: auto;
       font-family: Helvetica;
       grid-template-areas: 
+      "header header"
         "blocks blocks"
         "input preview"
         "html html";
@@ -123,6 +125,14 @@
       }
       .h3 {
         font-size: 14px;
+        font-weight: 700;
+      }
+      .header {
+        grid-area: header;
+        background-color: rgb(177, 18, 25);
+        color: white;
+        padding: 10px;
+        text-align: center;
         font-weight: 700;
       }
     button {
