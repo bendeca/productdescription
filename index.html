@@ -2,65 +2,81 @@
 <html>
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-  <title>My first Vue app</title>
   <script src="https://unpkg.com/vue@2"></script>
-  <script src="https://cdn.tiny.cloud/1/ekjnhz7itvvgp05ree5d2azoz5hobav2pbtzrkvpe7h18rmp/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
 </head>
 <body>
   <div id="app">
-    <p>
+      <div class="blocks">
+          <h1>Textblöcke</h1>
+          <span v-for="text in this.blocks">
+            <button class="ui button toggle" :class="{active:text.active}" @click="text.active = !text.active">{{ text.name }}</button>
+          </span>
+      </div>
       <div class="text-input">
-        <div v-for="text in this.texts">
-          <input v-model="text.name" class="header-input" :class="text.heading" :placeholder=text.name>
-          <textarea cols="100%" rows=5 v-model="text.content"></textarea>
+          <h1>Input</h1>
+        <div v-for="text in this.blocks">
+            <diV v-if="text.active">
+          <div><input v-model="text.name" class="header-input" :class="text.heading" :placeholder=text.name></div>
+          <div><textarea cols="100%" rows=5 v-model="text.content"></textarea></div>
+          </div>
         </div>
      </div>
      <div class="product-preview" >
-       <div v-for="text in this.texts">
+                   <h1>Preview</h1>
+
+       <div v-for="text in this.blocks">
           <div v-if="text.content" >
             <div :class="text.heading">{{ text.name }}</div>
             <div>{{ text.content }}</div><br>
           </div>
       </div>
     </div>
-      <div class="html-output">{{ htmlText }}
-      </div>
-    </p>
+      <div class="html-output" :class="{copyflash:this.copyprocess}">{{ htmlText }}</div>
+      <button @click="this.copyCode">Code Kopieren</button>
     </div>
-
-    <script>
-        tinymce.init({
-          selector: 'textarea',
-          menubar: false,
-          plugins: 'lists',
-          toolbar: 'undo redo | bold italic | bullist',
-          browser_spellcheck: true,
-
-        });
-      </script>
     
   <script>
 
     var app = new Vue({
+
       el: '#app',
       data: {
-        texts: {
-          nutshell: { name: "Das Wichtigste in Kürze", content: 'a', heading: 'h2'},
-          details: { name: "Details zu", content: '', heading: 'h2'},
-          specs: { name: "Technische Eigenschaften", content: '', heading: 'h3'},
-          inTheBox: { name: "Lieferumfang", content: '', heading: 'h3'},
-        }
+        blocks: {
+          nutshell: { active: false, name: "Das Wichtigste in Kürze", content: '', heading: 'h2'},
+          details: { active: false, name: "Details zu", content: '', heading: 'h2'},
+          review: { active: false, name: "Urteil Veloplus", content: '', heading: 'h2'},
+          specs: { active: false, name: "Technische Eigenschaften", content: '', heading: 'h3'},
+          inTheBox: { active: false, name: "Lieferumfang", content: '', heading: 'h3'},
+        },
+        copyprocess: false,
       },
   computed: {
     htmlText: function () {
       let html = '';
-      for(const text in this.texts){
-        if(this.texts[text].content) {
-          html = html + '<'+ `${this.texts[text].heading}` + '>' + `${this.texts[text].name}` + '</'+ `${this.texts[text].heading}` + '><p>' + `${this.texts[text].content.replace(/\r\n|\r|\n/g,"<br>")}` + '</p><br>';
+      for(const text in this.blocks){
+        if(this.blocks[text].content && this.blocks[text].active) {
+          html = html + '<'+ `${this.blocks[text].heading}` + '>' + `${this.blocks[text].name}` + '</'+ `${this.blocks[text].heading}` + '><p>' + `${this.blocks[text].content.replace(/\r\n|\r|\n/g,"<br>")}` + '</p><br>';
         }
       }
       return html;
     }
+  },
+  methods: {
+      copyCode: function() {
+        this.flashstart();
+        navigator.clipboard.writeText(this.htmlText);
+        setTimeout(this.flashend(), 2000);
+
+      },
+      flashstart: function() {
+          this.copyprocess = true;
+          console.log('true');
+      },
+      flashend: function() {
+          this.copyprocess = false;
+         console.log('false');
+
+      }
   }
   }
     )
@@ -72,6 +88,7 @@
       grid-template-rows: auto;
       font-family: Helvetica;
       grid-template-areas: 
+        "blocks blocks"
         "input preview"
         "html html";
       color: #2c3e50;
@@ -80,6 +97,7 @@
       color: #4fc08d;
     }
       .text-input {
+        padding: 20px;
         grid-area: input;
       }
       
@@ -88,10 +106,16 @@
         grid-area: preview;
         white-space: pre-wrap;
       }
+      .blocks {
+          padding: 20px;
+          grid-area: blocks;
+      }
       .html-output{
         font-family: "courier";
         padding: 100px;
-        grid-area: html
+        grid-area: html;
+        background-color: white;
+        color: black;
       }
       .h2 {
         font-size: 24px;
@@ -104,9 +128,17 @@
     button {
       background: none;
       border: solid 1px;
-      border-radius: 2em;
+      border-radius: 5px;
       font: inherit;
       padding: 0.75em 2em;
+      color: grey;
+    }
+    .active {
+        background-color: black;
+        color: white;
+    }
+    .copyflash {
+        background-color: grey;
     }
     </style>
 </body>
