@@ -18,7 +18,7 @@
         <div v-for="text in this.blocks">
             <diV v-if="text.active">
           <div><input v-model="text.name" class="header-input" :class="text.heading" :placeholder=text.name></div>
-          <div><textarea cols="100%" rows=5 v-model="text.content"></textarea></div>
+          <div><textarea cols="50%" rows=5 v-model="text.content"></textarea></div>
           </div>
         </div>
      </div>
