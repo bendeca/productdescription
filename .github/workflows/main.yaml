@@ -1,0 +1,19 @@
+name: Deploy Helper
+on: 
+  push:
+    branches:
+      - "main"
+jobs:
+  Cpoy-Index-To-Cyon:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install SSH Key
+        uses: shimataro/ssh-key-action@v2
+        with:
+          key: ${{ secrets.SSH_KEY }}
+          known_hosts: ${{ secrets.SSH_KNOWN_HOST }}
+      - name: Check out repository code
+        uses: actions/checkout@v3
+      - name: Deployment
+        run: |
+          scp ${{ github.workspace }}/index.html veloplus@${{ secrets.SSH_HOST }}:~/www/helper.veloplus.ch/public/index.html
