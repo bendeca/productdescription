@@ -1,5 +1,8 @@
 name: Deploy Helper
-on: [push]
+on: 
+push:
+  branches:
+    - "main"
 jobs:
   Cpoy-Index-To-Cyon:
     runs-on: ubuntu-latest
