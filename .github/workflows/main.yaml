@@ -10,5 +10,4 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           known_hosts: ${{ secrets.SSH_KNOWN_HOST }}
       - name: Deployment
-        - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
-        - run: scp ${{ github.workspace }}/index.html veloplus@${{ secrets.SSH_KNOWN_HOST }}/www/helper.veloplus.ch/public/index.html
+        run: scp ${{ github.workspace }}/index.html veloplus@${{ secrets.SSH_KNOWN_HOST }}/www/helper.veloplus.ch/public/index.html
