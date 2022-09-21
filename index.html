@@ -11,15 +11,22 @@
     <div class="header">Veloplus Helper</div>
       <div class="blocks">
           <h1>Template</h1>
-          <span v-for="template, key in this.templates">
-            <button class="ui button toggle" @click="activateTemplate(key)">{{ template.name }}</button>
-          </span>
+          <div>
+             <span v-for="template, key in this.templates">
+                <button class="ui button templates toggle" @click="activateTemplate(key)">{{ template.name }}</button>
+             </span>   
+          </div>
+          <div>
+             <span v-for="block in this.blocks">
+                <button class="ui button blocks toggle" :class={active:block.active} @click="block.active = !block.active">{{ block.name }}</button>
+             </span>   
+              </div>
       </div>
       <div class="text-input">
           <div v-for="block in this.blocks">
               <div v-if="block.active">
                   <div>                <editor 
-                    class="h2"
+                    :class="block.heading"
                     v-model="block.name" 
                     api-key="ekjnhz7itvvgp05ree5d2azoz5hobav2pbtzrkvpe7h18rmp"
                     :init="{
@@ -195,7 +202,11 @@
       padding: 0.75em 2em;
       color: grey;
     }
-    button:focus{
+    button.active {
+        background-color:rgb(177, 18, 25);
+        color: white;
+    }
+    button.templates:focus{
         background-color:rgb(177, 18, 25);
         color: white;
     }
