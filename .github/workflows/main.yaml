@@ -9,6 +9,8 @@ jobs:
         with:
           key: ${{ secrets.SSH_KEY }}
           known_hosts: ${{ secrets.SSH_KNOWN_HOST }}
+      - name: Check out repository code
+        uses: actions/checkout@v3
       - name: Deployment
         run: |
           ls ${{ github.workspace }}
