@@ -19,28 +19,35 @@
           <h1>Input</h1>
           <div v-for="block in this.blocks">
               <div v-if="block.active">
-                <div><input v-model="block.name" class="header-input" :class="block.heading" :placeholder=block.name></div>
+                  <div>                <editor 
+                    class="h2"
+                    v-model="block.name" 
+                    :init="{
+                        menubar: false,
+                        toolbar: false,
+                        browser_spellcheck: true,
+                        inline: true,
+                    }"
+                />
+</div><div>
                 <editor 
                     v-model="block.content" 
                     :init="{
-                        plugins: 'lists',
+                        plugins: 'lists paste',
                         menubar: false,
                         toolbar: 'undo redo | bold italic | bullist numlist | removeformat ',
                         browser_spellcheck: true,
+                        inline: true,
+                        paste_auto_cleanup_on_paste : true,
+                        paste_remove_styles: true,
+                        paste_remove_styles_if_webkit: true,
+                        paste_strip_class_attributes: true,
                     }"
                 />
+                </div>
             </div>
         </div>
      </div>
-     <div class="product-preview" >
-        <h1>Preview</h1>
-       <div v-for="text in this.blocks">
-          <div v-if="text.content && text.active" >
-            <div :class="text.heading">{{ text.name }}</div>
-            <div v-html="text.content"></div><br>
-          </div>
-      </div>
-    </div>
       <div class="html-output" :class="{copyflash:this.copyprocess}">{{ htmlText }}</div>
       <button @click="this.copyCode">Code Kopieren</button>
     </div>
@@ -60,8 +67,8 @@
             vpBrand: { name: 'Veloplus Eigenproduktion' },
         },
         blocks: {
-          nutshell: { active: false, name: "Das Wichtigste in Kürze", content: '', heading: 'h2'},
-          details: { active: false, name: "Details zu", content: '', heading: 'h2'},
+          nutshell: { active: false, name: "Das Wichtigste in Kürze", content: 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et', heading: 'h2'},
+          details: { active: false, name: "Details zu", content: 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate', heading: 'h2'},
           review: { active: false, name: "Urteil Veloplus", content: '', heading: 'h2'},
           specs: { active: false, name: "Technische Eigenschaften", content: '', heading: 'h3'},
           inTheBox: { active: false, name: "Lieferumfang", content: '', heading: 'h3'},
@@ -123,20 +130,25 @@
       display: grid;
       grid-template-columns: 1fr 1fr;
       grid-template-rows: auto;
-      font-family: Helvetica;
       grid-template-areas: 
       "header header"
         "blocks blocks"
-        "input preview"
+        "input input"
         "html html";
       color: #2c3e50;
+        font-family: Open Sans, sans-serif;
     }
     a, button {
       color: #4fc08d;
     }
       .text-input {
+          max-width:700px;
+        font-size: 14px;
         padding: 20px;
+        line-height:21px;
         grid-area: input;
+          justify-self: center;
+
       }
       
       .product-preview {
