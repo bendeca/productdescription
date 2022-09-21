@@ -2,46 +2,62 @@
 <html>
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+  <script>var exports = {};</script>
   <script src="https://unpkg.com/vue@2"></script>
+  <script src="https://unpkg.com/@tinymce/tinymce-vue@3.2.8/lib/browser/tinymce-vue.min.js"></script>
 </head>
 <body>
   <div id="app">
     <div class="header">Veloplus Helper</div>
       <div class="blocks">
-          <h1>Textblöcke</h1>
-          <span v-for="text in this.blocks">
-            <button class="ui button toggle" :class="{active:text.active}" @click="text.active = !text.active">{{ text.name }}</button>
+          <h1>Template</h1>
+          <span v-for="template,key in this.templates">
+            <button class="ui button toggle" @click="activateTemplate(key)">{{ template.name }}</button>
           </span>
       </div>
       <div class="text-input">
           <h1>Input</h1>
-        <div v-for="text in this.blocks">
-            <diV v-if="text.active">
-          <div><input v-model="text.name" class="header-input" :class="text.heading" :placeholder=text.name></div>
-          <div><textarea cols="50%" rows=5 v-model="text.content"></textarea></div>
-          </div>
+          <div v-for="block in this.blocks">
+              <div v-if="block.active">
+                <div><input v-model="block.name" class="header-input" :class="block.heading" :placeholder=block.name></div>
+                <editor 
+                    v-model="block.content" 
+                    :init="{
+                        plugins: 'lists',
+                        menubar: false,
+                        toolbar: 'undo redo | bold italic | bullist numlist'
+                        }"
+                        />
+            </div>
         </div>
      </div>
      <div class="product-preview" >
-                   <h1>Preview</h1>
-
+        <h1>Preview</h1>
        <div v-for="text in this.blocks">
-          <div v-if="text.content" >
+          <div v-if="text.content && text.active" >
             <div :class="text.heading">{{ text.name }}</div>
-            <div>{{ text.content }}</div><br>
+            <div v-html="text.content"></div><br>
           </div>
       </div>
     </div>
       <div class="html-output" :class="{copyflash:this.copyprocess}">{{ htmlText }}</div>
       <button @click="this.copyCode">Code Kopieren</button>
     </div>
-    
+    <script>var exports = {};</script>
+
   <script>
-
     var app = new Vue({
-
       el: '#app',
+        components: {
+        'editor': Editor 
+        },
       data: {
+        product: { number: '', description: ''},
+        templates: {
+            basic: { name: 'Basic' },
+            advanced: { name: 'Erweitert' },
+            vpBrand: { name: 'Veloplus Eigenproduktion' },
+        },
         blocks: {
           nutshell: { active: false, name: "Das Wichtigste in Kürze", content: '', heading: 'h2'},
           details: { active: false, name: "Details zu", content: '', heading: 'h2'},
@@ -60,23 +76,36 @@
         }
       }
       return html;
-    }
+    },
   },
   methods: {
       copyCode: function() {
         this.flashstart();
         navigator.clipboard.writeText(this.htmlText);
         setTimeout(this.flashend(), 2000);
-
       },
-      flashstart: function() {
-          this.copyprocess = true;
-          console.log('true');
-      },
-      flashend: function() {
-          this.copyprocess = false;
-         console.log('false');
-
+      activateTemplate: function(template) {
+          if(template == 'basic') {
+              this.blocks.nutshell.active = false;
+              this.blocks.details.active = true;
+              this.blocks.review.active = false;
+              this.blocks.specs.active = false;
+              this.blocks.inTheBox.active = false;
+          }
+          if(template == 'advanced') {
+              this.blocks.nutshell.active = true;
+              this.blocks.details.active = true;
+              this.blocks.review.active = true;
+              this.blocks.specs.active = true;
+              this.blocks.inTheBox.active = true;
+          }
+          if(template == 'vpBrand') {
+              this.blocks.nutshell.active = false;
+              this.blocks.details.active = true;
+              this.blocks.review.active = false;
+              this.blocks.specs.active = true;
+              this.blocks.inTheBox.active = true;
+          }
       }
   }
   }
@@ -143,8 +172,8 @@
       padding: 0.75em 2em;
       color: grey;
     }
-    .active {
-        background-color: black;
+    button:focus{
+        background-color:rgb(177, 18, 25);
         color: white;
     }
     .copyflash {
