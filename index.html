@@ -98,7 +98,6 @@
   },
   methods: {
       copyCode: function() {
-        this.flashstart();
         navigator.clipboard.writeText(this.htmlText);
         setTimeout(this.flashend(), 2000);
       },
