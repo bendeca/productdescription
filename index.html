@@ -11,7 +11,7 @@
     <div class="header">Veloplus Helper</div>
       <div class="blocks">
           <h1>Template</h1>
-          <span v-for="template,key in this.templates">
+          <span v-for="template, key in this.templates">
             <button class="ui button toggle" @click="activateTemplate(key)">{{ template.name }}</button>
           </span>
       </div>
@@ -25,9 +25,10 @@
                     :init="{
                         plugins: 'lists',
                         menubar: false,
-                        toolbar: 'undo redo | bold italic | bullist numlist'
-                        }"
-                        />
+                        toolbar: 'undo redo | bold italic | bullist numlist | removeformat ',
+                        browser_spellcheck: true,
+                    }"
+                />
             </div>
         </div>
      </div>
@@ -112,6 +113,12 @@
     )
   </script>
   <style lang="scss">
+      
+    @font-face{
+        font-family: Geogrotesque-Medium;
+        src: url("/assets/Geogrotesque-Medium.woff2") format("woff");
+        font-weight:400;
+        }
     #app {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -135,6 +142,9 @@
       .product-preview {
         font-family: Open Sans, sans-serif;
         grid-area: preview;
+        font-size: 14px;
+        line-height: 21px;
+        max-width: 700px;
         white-space: pre-wrap;
       }
       .blocks {
@@ -149,8 +159,8 @@
         color: black;
       }
       .h2 {
+        font-family: Geogrotesque-Medium, sans-serif;
         font-size: 24px;
-        font-weight: 700;
       }
       .h3 {
         font-size: 14px;
