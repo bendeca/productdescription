@@ -9,9 +9,6 @@ jobs:
         uses: shimataro/ssh-key-action@v2
         with:
             key: ${{ secrets.SSH_KEY }}
-            known_hosts: 'placeholder'
-      - name: Adding Known Hosts
-        - run: ssh-keyscan -H ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts
-
+            known_hosts: ${{ secrets.SSH_KNOWN_HOST }}
       - name: Deployment
         - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
