@@ -4,10 +4,14 @@ jobs:
   Cpoy-Index-To-Cyon:
     runs-on: ubuntu-latest
     steps:
-      - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
-      - run: eval $(ssh-agent)
-      - run: echo "${{ secrets.cyon_deployment }}" | tr -d '\r' | ssh-add - > /dev/null
-      - run: mkdir -p ~/.ssh
-      - run: chmod 700 ~/.ssh
-      - run: ssh-keyscan $DEPLOY_IP >> ~/.ssh/known_hosts
-      - run: chmod 644 ~/.ssh/known_hosts
+    steps:
+      - name: Install SSH Key
+         uses: shimataro/ssh-key-action@v2
+         with:
+            key: ${{ secrets.SSH_KEY }}
+            known_hosts: 'placeholder'
+      - name: Adding Known Hosts
+        run: ssh-keyscan -H ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts
+
+      - name: Deployment
+        - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
