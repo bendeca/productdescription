@@ -10,4 +10,5 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           known_hosts: ${{ secrets.SSH_KNOWN_HOST }}
       - name: Deployment
-        run: ls ${{ github.workspace }}
+        run: |
+          ls ${{ github.workspace }}
