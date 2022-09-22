@@ -27,6 +27,7 @@
               <div v-if="block.active">
                   <div>                <editor 
                     :class="block.heading"
+                    class="padded"
                     v-model="block.name" 
                     api-key="ekjnhz7itvvgp05ree5d2azoz5hobav2pbtzrkvpe7h18rmp"
                     :init="{
@@ -40,6 +41,7 @@
                 /> 
 </div><div>
                 <editor 
+                    class="padded"
                     v-model="block.content" 
                     api-key="ekjnhz7itvvgp05ree5d2azoz5hobav2pbtzrkvpe7h18rmp"
                     :init="{
@@ -58,7 +60,7 @@
             </div>
         </div>
      </div>
-      <div class="html-output" :class="{copyflash:this.copyprocess}">{{ htmlText }}</div>
+      <div class="html-output" >{{ htmlText }}</div>
       <button @click="this.copyCode">Code Kopieren</button>
     </div>
     <script>var exports = {};</script>
@@ -83,7 +85,6 @@
           specs: { active: false, name: "Technische Eigenschaften", content: '', heading: 'h3'},
           inTheBox: { active: false, name: "Lieferumfang", content: '', heading: 'h3'},
         },
-        copyprocess: false,
       },
   computed: {
     htmlText: function () {
@@ -99,7 +100,6 @@
   methods: {
       copyCode: function() {
         navigator.clipboard.writeText(this.htmlText);
-        setTimeout(this.flashend(), 2000);
       },
       activateTemplate: function(template) {
           if(template == 'basic') {
@@ -151,7 +151,7 @@
       color: #4fc08d;
     }
       .text-input {
-          max-width:700px;
+          max-width:720px;
         font-size: 14px;
         padding: 20px;
         line-height:21px;
@@ -213,6 +213,9 @@
     }
     .copyflash {
         background-color: grey;
+    }
+    .padded {
+      padding: 0 10px;
     }
     </style>
 </body>
