@@ -45,7 +45,7 @@
                     v-model="block.content" 
                     api-key="ekjnhz7itvvgp05ree5d2azoz5hobav2pbtzrkvpe7h18rmp"
                     :init="{
-                        plugins: 'lists paste',
+                        plugins: 'lists paste textpattern',
                         menubar: false,
                         toolbar: 'undo redo | bold italic | bullist numlist | removeformat ',
                         browser_spellcheck: true,
@@ -54,6 +54,11 @@
                         paste_remove_styles: true,
                         paste_remove_styles_if_webkit: true,
                         paste_strip_class_attributes: true,
+                        textpattern_patterns: [
+                            {start: '1. ', cmd: 'InsertOrderedList'},
+                            {start: '* ', cmd: 'InsertUnorderedList'},
+                            {start: '- ', cmd: 'InsertUnorderedList' }
+                            ]
                     }"
                 />
                 </div>
