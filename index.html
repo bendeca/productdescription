@@ -155,7 +155,7 @@
           body: JSON.stringify({
               'query': ' { product(productId: 33001234) {_id texts {description}}}'
       })
-      }).then(response => response.json()).then(data => console.log(data.product));
+      }).then(response => response.json()).then(data => console.log(data));
       },
       activateTemplate: function(template) {
           if(template == 'basic') {
