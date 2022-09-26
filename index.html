@@ -100,7 +100,7 @@
         <input type="text" class="product-number-input" @keyup.enter="getCurrentText" v-model="productNumber" placeholder="e.g. 33001234">
         <button class="load-text" @click="getCurrentText">Aktueller Text Laden</button>
         </div>
-        <<h2>this.currentProduct</h2>
+        <h2>{{ currentProduct }}</h2>
         <div class="current-text" v-html="this.currentText"></div>
       </div>
     </div>
