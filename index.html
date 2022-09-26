@@ -150,7 +150,8 @@
     })
     });
       let response =  await currentRequest.json();
-      return response[0].data.product.texts.description;
+      console.log(response);
+      return response[0].product.texts.description;
     }
   },
   methods: {
