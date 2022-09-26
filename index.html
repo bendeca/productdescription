@@ -94,6 +94,7 @@
      </div>
       <div class="html-output" >{{ htmlText }}</div>
       <button class="copy" @click="this.copyCode">Code Kopieren</button>
+      <div>{{ currentText }}</div>
     </div>
 
   <script>
@@ -133,6 +134,23 @@
       }
       return html;
     },
+    currentText: async function() {
+      let currentRequest = await fetch('https://api.veloplus.ch/graphql', {
+        method: 'POST',
+        headers: {
+            'Accept-Encoding': 'gzip, deflate, br',
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+            'Connection': 'keep-alive',
+            'DNT': '1',
+            'Origin': 'https://api.veloplus.ch'
+        },
+        body: JSON.stringify({
+            'query': ' { product(productId: 33001234) {_id texts {description}}}'
+    })
+    });
+      return await currentRequest.json();
+    }
   },
   methods: {
       copyCode: function(event) {
