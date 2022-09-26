@@ -95,10 +95,12 @@
       <div class="html-output" ><div>{{ htmlText }}</div>
         <button class="copy" @click="this.copyCode">Code Kopieren</button>
       </div>
-      <div class="current-text" v-if=true>
-        <input type="text" v-model="productNumber">
+      <div class="current" v-if=true>
+        <div>
+        <input type="text" class="product-number-input" v-model="productNumber" placeholder="e.g. 33001234">
         <button class="load-text" @click="this.getCurrentText">Aktueller Text Laden</button>
-        <div v-html="this.currentText"></div>
+        </div>
+        <div class="current-text" v-html="this.currentText"></div>
       </div>
     </div>
 
@@ -226,6 +228,8 @@
         "copybutton copybutton";
       color: #2c3e50;
         font-family: Open Sans, sans-serif;
+        justify-items: center;
+
     }
     a, button {
       color: #4fc08d;
@@ -236,10 +240,11 @@
         padding: 20px;
         line-height:28px;
         grid-area: input;
-          justify-self: center;
-border: black solid 1px;
+        border: black solid 1px;
       }
-      
+      .product-number-input {
+        line-height: 36px;
+      }
       .blocks {
           padding: 20px;
           grid-area: blocks;
@@ -253,12 +258,16 @@ border: black solid 1px;
         color: black;
       }
       .current-text{
-        grid-area: old;
+          width:720px;
+        font-size: 18px;
+        padding: 20px;
+        line-height:28px;
+        grid-area: input;
+        border: black solid 1px;
       }
-      .load-text {
-          width: 100%;
-        }
-
+      .current{
+          grid-area: old;
+      }
       .copy {
         grid-area: copybutton;
         width: 100%;
