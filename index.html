@@ -94,7 +94,8 @@
      </div>
       <div class="html-output" >{{ htmlText }}</div>
       <button class="copy" @click="this.copyCode">Code Kopieren</button>
-      <div>{{ this.getCurrentText() }}</div>
+      <button class="load-text" @click="this.getCurrentText">Aktueller Text</button>
+      <div>{{ currentText }}</div>
     </div>
 
   <script>
@@ -104,6 +105,7 @@
         'editor': Editor 
         },
       data: {
+        currentText: '',
         product: { number: '', description: ''},
         templates: {
             basic: { name: 'Basic' },
@@ -156,7 +158,7 @@
       })
       })
       .then(response => response.json())
-      .then((data) => { return data.data.product.texts.description });
+      .then((data) => { this.currentText = data.data.product.texts.description });
       },
       activateTemplate: function(template) {
           if(template == 'basic') {
