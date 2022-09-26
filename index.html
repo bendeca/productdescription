@@ -141,25 +141,22 @@
         navigator.clipboard.writeText(this.htmlText);
       },
       getCurrentText: async function() {
-      let currentRequest = await fetch('https://api.veloplus.ch/graphql', {
-        method: 'POST',
-        headers: {
-            'Accept-Encoding': 'gzip, deflate, br',
-            'Content-Type': 'application/json',
-            'Accept': 'application/json',
-            'Connection': 'keep-alive',
-            'DNT': '1',
-            'Origin': 'https://api.veloplus.ch'
-        },
-        body: JSON.stringify({
-            'query': ' { product(productId: 33001234) {_id texts {description}}}'
-    })
-    });
-      let response =  await currentRequest.json();
-      console.log(response);
-      return await response.data.product.texts.description;
-    },
-
+        let currentDesciption = '';
+        fetch('https://api.veloplus.ch/graphql', {
+          method: 'POST',
+          headers: {
+              'Accept-Encoding': 'gzip, deflate, br',
+              'Content-Type': 'application/json',
+              'Accept': 'application/json',
+              'Connection': 'keep-alive',
+              'DNT': '1',
+              'Origin': 'https://api.veloplus.ch'
+          },
+          body: JSON.stringify({
+              'query': ' { product(productId: 33001234) {_id texts {description}}}'
+      })
+      }).then(response => response.json()).then(data => console.log(data.product.texts.description));
+      },
       activateTemplate: function(template) {
           if(template == 'basic') {
               this.blocks.nutshell.active = false;
