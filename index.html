@@ -95,7 +95,8 @@
       <div class="html-output" ><div>{{ htmlText }}</div>
         <button class="copy" @click="this.copyCode">Code Kopieren</button>
       </div>
-      <div class="current-text">
+      <div class="current-text" v-if=true>
+        <input type="text" v-model="productNumber">
         <button class="load-text" @click="this.getCurrentText">Aktueller Text Laden</button>
         <div v-html="this.currentText"></div>
       </div>
@@ -109,6 +110,7 @@
         },
       data: {
         currentText: '',
+        productNumber: '',
         product: { number: '', description: ''},
         templates: {
             basic: { name: 'Basic' },
@@ -157,7 +159,7 @@
               'Origin': 'https://api.veloplus.ch'
           },
           body: JSON.stringify({
-              'query': ' { product(productId: 33001234) {_id texts {description}}}'
+              'query': ' { product(productId: ' + this.productNumber + ') { texts {description}}}'
       })
       })
       .then(response => response.json())
