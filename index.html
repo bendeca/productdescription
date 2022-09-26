@@ -100,6 +100,7 @@
         <input type="text" class="product-number-input" @keyup.enter="getCurrentText" v-model="productNumber" placeholder="e.g. 33001234">
         <button class="load-text" @click="getCurrentText">Aktueller Text Laden</button>
         </div>
+        <<h2>this.currentProduct</h2>
         <div class="current-text" v-html="this.currentText"></div>
       </div>
     </div>
@@ -112,6 +113,7 @@
         },
       data: {
         currentText: '',
+        currentProduct: '',
         productNumber: '',
         product: { number: '', description: ''},
         templates: {
@@ -162,11 +164,11 @@
               'Origin': 'https://api.veloplus.ch'
           },
           body: JSON.stringify({
-              'query': ' { product(productId: ' + this.productNumber + ') { texts {description}}}'
+              'query': ' { product(productId: ' + this.productNumber + ') { texts {title description}}}'
       })
       })
       .then(response => response.json())
-      .then((data) => { this.currentText = data.data.product.texts.description });
+      .then((data) => { this.currentText = data.data.product.texts.description; this.currentProduct = data.data.product.texts.title});
       },
       activateTemplate: function(template) {
           if(template == 'basic') {
