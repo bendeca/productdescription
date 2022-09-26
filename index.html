@@ -97,8 +97,8 @@
       </div>
       <div class="current" v-if=true>
         <div>
-        <input type="text" class="product-number-input" v-model="productNumber" placeholder="e.g. 33001234">
-        <button class="load-text" @click="this.getCurrentText">Aktueller Text Laden</button>
+        <input type="text" class="product-number-input" @keyup.enter="getCurrentText" v-model="productNumber" placeholder="e.g. 33001234">
+        <button class="load-text" @click="getCurrentText">Aktueller Text Laden</button>
         </div>
         <div class="current-text" v-html="this.currentText"></div>
       </div>
@@ -150,6 +150,7 @@
         navigator.clipboard.writeText(this.htmlText);
       },
       getCurrentText: async function() {
+        console.log(this.productNumber);
         return await fetch('https://api.veloplus.ch/graphql', {
           method: 'POST',
           headers: {
