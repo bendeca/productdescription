@@ -94,7 +94,7 @@
      </div>
       <div class="html-output" >{{ htmlText }}</div>
       <button class="copy" @click="this.copyCode">Code Kopieren</button>
-      <div>{{ currentText }}</div>
+      <div>{{ this.getCurrentText() }}</div>
     </div>
 
   <script>
@@ -134,7 +134,13 @@
       }
       return html;
     },
-    currentText: async function() {
+  },
+  methods: {
+      copyCode: function(event) {
+        event.currentTarget.innerHTML = "ist Kopiert!";
+        navigator.clipboard.writeText(this.htmlText);
+      },
+      getCurrentText: async function() {
       let currentRequest = await fetch('https://api.veloplus.ch/graphql', {
         method: 'POST',
         headers: {
@@ -152,13 +158,8 @@
       let response =  await currentRequest.json();
       console.log(response);
       return await response.data.product.texts.description;
-    }
-  },
-  methods: {
-      copyCode: function(event) {
-        event.currentTarget.innerHTML = "ist Kopiert!";
-        navigator.clipboard.writeText(this.htmlText);
-      },
+    },
+
       activateTemplate: function(template) {
           if(template == 'basic') {
               this.blocks.nutshell.active = false;
