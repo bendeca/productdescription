@@ -92,10 +92,13 @@
           </div>
         </div>
      </div>
-      <div class="html-output" >{{ htmlText }}</div>
-      <button class="copy" @click="this.copyCode">Code Kopieren</button>
-      <button class="load-text" @click="this.getCurrentText">Aktueller Text</button>
-      <div>{{ currentText }}</div>
+      <div class="html-output" ><div>{{ htmlText }}</div>
+        <button class="copy" @click="this.copyCode">Code Kopieren</button>
+      </div>
+      <div class="current-text">
+        <button class="load-text" @click="this.getCurrentText">Aktueller Text Laden</button>
+        <div v-html="this.currentText"></div>
+      </div>
     </div>
 
   <script>
@@ -215,7 +218,8 @@
       grid-template-areas: 
       "header header"
         "blocks blocks"
-        "input input"
+        "old input"
+        "manufacturer input"
         "html html"
         "copybutton copybutton";
       color: #2c3e50;
@@ -246,8 +250,16 @@ border: black solid 1px;
         background-color: white;
         color: black;
       }
+      .current-text{
+        grid-area: old;
+      }
+      .load-text {
+          width: 100%;
+        }
+
       .copy {
         grid-area: copybutton;
+        width: 100%;
       }
       .h2,h2 {
         font-family: Geogrotesque-Medium, sans-serif;
