@@ -151,7 +151,7 @@
     });
       let response =  await currentRequest.json();
       console.log(response);
-      return response.data.product.texts.description;
+      return await response.data.product.texts.description;
     }
   },
   methods: {
