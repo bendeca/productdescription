@@ -141,7 +141,7 @@
         navigator.clipboard.writeText(this.htmlText);
       },
       getCurrentText: async function() {
-        fetch('https://api.veloplus.ch/graphql', {
+        return await fetch('https://api.veloplus.ch/graphql', {
           method: 'POST',
           headers: {
               'Accept-Encoding': 'gzip, deflate, br',
@@ -156,7 +156,7 @@
       })
       })
       .then(response => response.json())
-      .then(data => console.log(data.data.product.texts.description));
+      .then((data) => { return data.data.product.texts.description });
       },
       activateTemplate: function(template) {
           if(template == 'basic') {
