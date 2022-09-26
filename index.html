@@ -149,7 +149,8 @@
             'query': ' { product(productId: 33001234) {_id texts {description}}}'
     })
     });
-      return await currentRequest.json();
+      let response =  await currentRequest.json();
+      return response[0].data.product.texts.description;
     }
   },
   methods: {
