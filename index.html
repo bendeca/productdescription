@@ -2,6 +2,7 @@
 <html>
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+  <meta name="robots" content="noindex">
   <script>var exports = {};</script>
   <script src="https://unpkg.com/vue@2"></script>
   <script src="https://unpkg.com/@tinymce/tinymce-vue@3.2.8/lib/browser/tinymce-vue.min.js"></script>
@@ -125,9 +126,9 @@
         blocks: {
           nutshell: { active: false, name: "Auf den Punkt gebracht", content: 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et', heading: 'h2'},
           details: { active: false, name: "Wichtige Eigenschaften", content: 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate', heading: 'h2'},
-          review: { active: false, name: "Das meint Veloplus", content: '', heading: 'h2'},
           specs: { active: false, name: "Weitere Informationen", content: '', heading: 'h3'},
           inTheBox: { active: false, name: "Lieferumfang", content: '', heading: 'h3'},
+          review: { active: false, name: "Das meint Veloplus", content: '', heading: 'h2'},
           freestyle: {active: false, name: "Freitext", content: 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate', heading: ''}
         },
       },
@@ -174,18 +175,18 @@
           if(template == 'basic') {
               this.blocks.nutshell.active = true;
               this.blocks.details.active = true;
-              this.blocks.review.active = false;
               this.blocks.specs.active = false;
               this.blocks.inTheBox.active = false;
+              this.blocks.review.active = false;
               this.blocks.freestyle.active = false;
 
           }
           if(template == 'advanced') {
               this.blocks.nutshell.active = true;
               this.blocks.details.active = true;
-              this.blocks.review.active = true;
               this.blocks.specs.active = true;
               this.blocks.inTheBox.active = true;
+              this.blocks.review.active = true;
               this.blocks.freestyle.active = false;
 
           }
