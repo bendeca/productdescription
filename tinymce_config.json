@@ -1,8 +1,16 @@
 {
-  "freestyle": {
+  "header": {
+    "menubar": false,
+    "toolbar": false,
+    "browser_spellcheck": true,
+    "inline": true,
+    "forced_root_blocks": false,
+    "valid_elements": "h2,h3"
+  },
+  "standard": {
     "plugins": "lists paste textpattern code link",
     "menubar": false,
-    "toolbar": "code | undo redo | bold italic | bullist numlist | removeformat | formatselect ",
+    "toolbar": "undo redo | bold italic | bullist numlist | removeformat ",
     "browser_spellcheck": true,
     "inline": true,
     "paste_auto_cleanup_on_paste": true,
@@ -16,18 +24,10 @@
       { "start": "- ", "cmd": "InsertUnorderedList" }
     ]
   },
-  "header": {
-    "menubar": false,
-    "toolbar": false,
-    "browser_spellcheck": true,
-    "inline": true,
-    "forced_root_blocks": false,
-    "valid_elements": "h2,h3"
-  },
-  "standard": {
+  "freestyle": {
     "plugins": "lists paste textpattern code link",
     "menubar": false,
-    "toolbar": "undo redo | bold italic | bullist numlist | removeformat ",
+    "toolbar": "code | undo redo | bold italic | bullist numlist | removeformat | formatselect ",
     "browser_spellcheck": true,
     "inline": true,
     "paste_auto_cleanup_on_paste": true,

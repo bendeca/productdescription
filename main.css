@@ -13,7 +13,8 @@
     "old input"
     "manufacturer input"
     "html html"
-    "copybutton copybutton";
+    "copybutton copybutton"
+    "savedItems savedItems";
   color: #2c3e50;
   font-family: Open Sans, sans-serif;
   justify-items: center;
@@ -96,6 +97,19 @@ button.templates:focus {
   background-color: rgb(177, 18, 25);
   color: white;
 }
+button.delete {
+  background-color: red;
+  color: white;
+}
 .copyflash {
   background-color: grey;
+}
+.local-storage {
+  grid-area: savedItems;
+}
+.saved-items {
+  border-top: 1px solid black;
+  padding: 20px;
+  display: grid;
+  grid-template-columns: 1fr 5fr 1fr 1fr;
 }

@@ -18,4 +18,5 @@ jobs:
         run: |
           scp ${{ github.workspace }}/index.html veloplus@${{ secrets.SSH_HOST }}:~/www/helper.veloplus.ch/public/index.html
           scp ${{ github.workspace }}/tinymce_config.json veloplus@${{ secrets.SSH_HOST }}:~/www/helper.veloplus.ch/public/tinymce_config.json
-                    scp ${{ github.workspace }}/main.css veloplus@${{ secrets.SSH_HOST }}:~/www/helper.veloplus.ch/public/main.css
+          scp ${{ github.workspace }}/templates.json veloplus@${{ secrets.SSH_HOST }}:~/www/helper.veloplus.ch/public/templates.json
+          scp ${{ github.workspace }}/main.css veloplus@${{ secrets.SSH_HOST }}:~/www/helper.veloplus.ch/public/main.css

@@ -1,0 +1,38 @@
+{
+  "nutshell": {
+    "active": false,
+    "name": "Auf den Punkt gebracht",
+    "content": "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et",
+    "heading": "h2"
+  },
+  "details": {
+    "active": false,
+    "name": "Wichtige Eigenschaften",
+    "content": "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate",
+    "heading": "h2"
+  },
+  "specs": {
+    "active": false,
+    "name": "Weitere Informationen",
+    "content": "",
+    "heading": "h3"
+  },
+  "inTheBox": {
+    "active": false,
+    "name": "Lieferumfang",
+    "content": "",
+    "heading": "h3"
+  },
+  "review": {
+    "active": false,
+    "name": "Das meint Veloplus",
+    "content": "",
+    "heading": "h2"
+  },
+  "freestyle": {
+    "active": false,
+    "name": "Freitext",
+    "content": "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate",
+    "heading": ""
+  }
+}
