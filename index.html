@@ -17,6 +17,10 @@
              <span v-for="template, key in this.templates">
                 <button class="ui button templates toggle" @click="activateTemplate(key)">{{ template.name }}</button>
              </span>   
+             <span>
+                | <button class="ui button toggle delete" @click="resetContent()"> x Text Löschen</button>
+                <button class="ui button toggle save" @click="saveContent()">Text lokal Speichern</button>
+             </span>   
           </div>
           <div>
              <span v-for="block in this.blocks">
@@ -56,7 +60,7 @@
       <div class="html-output" ><div>{{ htmlText }}</div>
         <button class="copy" @click="this.copyCode">Code Kopieren</button>
       </div>
-      <div class="current" v-if=true>
+      <div class="current">
         <div>
         <input type="text" class="product-number-input" @keyup.enter="getCurrentText" v-model="productNumber" placeholder="e.g. 33001234">
         <button class="load-text" @click="getCurrentText">Aktueller Text Laden</button>
@@ -64,11 +68,20 @@
         <h2>{{ currentProduct }}</h2>
         <div class="current-text" v-html="this.currentText"></div>
       </div>
+      <div class="local-storage">
+        <div class="saved-items" v-for="savedItem,index in savedItems">
+          <div class="product-number">{{ savedItem[0] }}</div>
+          <div>{{ savedItem[1] }}</div>
+          <button class="load-text" @click="loadContent(savedItem[1])">Laden</button>
+          <button class="load-text" @click="deleteFromLocalStorage(index)">Löschen</button>
+        </div>
+      </div>
     </div>
 
   <script type="module">
     import tinyconfig_json from "./tinymce_config.json" assert { type: 'json' };
-
+    import templates_json from "./templates.json" assert { type: 'json' };
+    
     var app = new Vue({
 
       el: '#app',
@@ -87,14 +100,8 @@
             vpBrand: { name: 'Veloplus Eigenprodukte' },
             freestyle: { name: 'Freestyle' }
         },
-        blocks: {
-          nutshell: { active: false, name: "Auf den Punkt gebracht", content: 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et', heading: 'h2'},
-          details: { active: false, name: "Wichtige Eigenschaften", content: 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate', heading: 'h2'},
-          specs: { active: false, name: "Weitere Informationen", content: '', heading: 'h3'},
-          inTheBox: { active: false, name: "Lieferumfang", content: '', heading: 'h3'},
-          review: { active: false, name: "Das meint Veloplus", content: '', heading: 'h2'},
-          freestyle: {active: false, name: "Freitext", content: 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate', heading: ''}
-        },
+        blocks: JSON.parse(JSON.stringify(templates_json)),
+        savedItems: '',
       },
   computed: {
     htmlText: function () {
@@ -110,6 +117,11 @@
       }
       return html;
     },
+  },
+  mounted() {
+    this.savedItems = localStorage.getItem("descriptions")
+      ? JSON.parse(localStorage.getItem("descriptions"))
+      : [];
   },
   methods: {
       copyCode: function(event) {
@@ -134,6 +146,22 @@
       })
       .then(response => response.json())
       .then((data) => { this.currentText = data.data.product.texts.description; this.currentProduct = data.data.product.texts.title});
+      },
+      resetContent: function() {
+        this.blocks = JSON.parse(JSON.stringify(templates_json));
+      },
+      loadContent: function(content) {
+        this.resetContent();
+        this.activateTemplate('freestyle');
+        this.blocks.freestyle.content = content;
+      },
+      deleteFromLocalStorage: function(index) {
+        this.savedItems.splice(index, 1);
+      },
+      saveContent: function() {
+        this.savedItems.push([ this.productNumber, this.htmlText ]);
+        localStorage.setItem("descriptions", JSON.stringify(this.savedItems));
+        this.resetContent();
       },
       activateTemplate: function(template) {
           if(template == 'basic') {
