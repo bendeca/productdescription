@@ -19,7 +19,7 @@
              </span>   
              <span>
                 | <button class="ui button toggle delete" @click="resetContent()"> x Text Löschen</button>
-                <button class="ui button toggle save" @click="saveContent()">Text lokal Speichern</button>
+                <button class="ui button toggle save" @click="saveContent()" v-if=false>Text lokal Speichern</button>
              </span>   
           </div>
           <div>
@@ -68,7 +68,7 @@
         <h2>{{ currentProduct }}</h2>
         <div class="current-text" v-html="this.currentText"></div>
       </div>
-      <div class="local-storage">
+      <div class="local-storage" v-if=false>
         <div class="saved-items" v-for="savedItem,index in savedItems">
           <div class="product-number">{{ savedItem[0] }}</div>
           <div>{{ savedItem[1] }}</div>
