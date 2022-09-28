@@ -6,6 +6,7 @@
   <script>var exports = {};</script>
   <script src="https://unpkg.com/vue@2"></script>
   <script src="https://unpkg.com/@tinymce/tinymce-vue@3.2.8/lib/browser/tinymce-vue.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="main.css" media="screen" />
 </head>
 <body>
   <div id="app">
@@ -28,65 +29,24 @@
             <div v-if="block.active">
               <div v-if="key == 'freestyle'">
                 <editor 
-                    class="padded"
                     v-model="block.content" 
                     api-key="ekjnhz7itvvgp05ree5d2azoz5hobav2pbtzrkvpe7h18rmp"
-                    :init="{
-                        plugins: 'lists paste textpattern code',
-                        menubar: false,
-                        toolbar: 'code | undo redo | bold italic | bullist numlist | removeformat | formatselect ',
-                        browser_spellcheck: true,
-                        inline: true,
-                        paste_auto_cleanup_on_paste : true,
-                        paste_remove_styles: true,
-                        paste_remove_styles_if_webkit: true,
-                        paste_strip_class_attributes: true,
-                        block_formats: 'Paragraph=p;Heading 2=h2;Heading 3=h3;',
-                        textpattern_patterns: [
-                            {start: '1. ', cmd: 'InsertOrderedList'},
-                            {start: '* ', cmd: 'InsertUnorderedList'},
-                            {start: '- ', cmd: 'InsertUnorderedList' }
-                            ]
-                    }"
+                    :init="tinymceConfig.freestyle"
                 />
               </div>
               <div v-else>
                   <div>                
                   <editor 
                     :class="block.heading"
-                    class="padded"
                     v-model="block.name" 
                     api-key="ekjnhz7itvvgp05ree5d2azoz5hobav2pbtzrkvpe7h18rmp"
-                    :init="{
-                        menubar: false,
-                        toolbar: false,
-                        browser_spellcheck: true,
-                        inline: true,
-                        forced_root_blocks: false,
-                        valid_elements: 'h2,h3',
-                    }"
+                    :init="tinymceConfig.header"
                 /> 
               </div><div>
                 <editor 
-                    class="padded"
                     v-model="block.content" 
                     api-key="ekjnhz7itvvgp05ree5d2azoz5hobav2pbtzrkvpe7h18rmp"
-                    :init="{
-                        plugins: 'lists paste textpattern',
-                        menubar: false,
-                        toolbar: 'undo redo | bold italic | bullist numlist | removeformat',
-                        browser_spellcheck: true,
-                        inline: true,
-                        paste_auto_cleanup_on_paste : true,
-                        paste_remove_styles: true,
-                        paste_remove_styles_if_webkit: true,
-                        paste_strip_class_attributes: true,
-                        textpattern_patterns: [
-                            {start: '1. ', cmd: 'InsertOrderedList'},
-                            {start: '* ', cmd: 'InsertUnorderedList'},
-                            {start: '- ', cmd: 'InsertUnorderedList' }
-                            ]
-                    }"
+                    :init="tinymceConfig.standard"
                 />
                 </div>
             </div>
@@ -106,13 +66,17 @@
       </div>
     </div>
 
-  <script>
+  <script type="module">
+    import tinyconfig_json from "./tinymce_config.json" assert { type: 'json' };
+
     var app = new Vue({
+
       el: '#app',
         components: {
         'editor': Editor 
         },
       data: {
+        tinymceConfig: tinyconfig_json,
         currentText: '',
         currentProduct: '',
         productNumber: '',
@@ -212,110 +176,5 @@
   }
     )
   </script>
-  <style lang="scss">
-      
-    @font-face{
-        font-family: Geogrotesque-Medium;
-        src: url("/assets/Geogrotesque-Medium.woff2") format("woff");
-        font-weight:400;
-        }
-    #app {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      grid-template-rows: auto;
-      grid-template-areas: 
-      "header header"
-        "blocks blocks"
-        "old input"
-        "manufacturer input"
-        "html html"
-        "copybutton copybutton";
-      color: #2c3e50;
-        font-family: Open Sans, sans-serif;
-        justify-items: center;
-
-    }
-    a, button {
-      color: #4fc08d;
-    }
-      .text-input {
-          width:720px;
-        font-size: 18px;
-        padding: 20px;
-        line-height:28px;
-        grid-area: input;
-        border: black solid 1px;
-      }
-      .product-number-input {
-        line-height: 36px;
-      }
-      .blocks {
-          padding: 20px;
-          grid-area: blocks;
-          justify-self: center;
-      }
-      .html-output{
-        font-family: "courier";
-        padding: 100px;
-        grid-area: html;
-        background-color: white;
-        color: black;
-      }
-      .current-text{
-          width:720px;
-        font-size: 18px;
-        padding: 20px;
-        line-height:28px;
-        grid-area: input;
-        border: black solid 1px;
-      }
-      .current{
-          grid-area: old;
-      }
-      .copy {
-        grid-area: copybutton;
-        width: 100%;
-      }
-      .h2,h2 {
-        font-family: Geogrotesque-Medium, sans-serif;
-        font-size: 24px;
-        font-weight:400;
-      }
-      .h3,h3 {
-        font-size: 14px;
-        font-weight: 700;
-      }
-      .header {
-        grid-area: header;
-        background-color: rgb(177, 18, 25);
-        color: white;
-        padding: 10px;
-        text-align: center;
-        font-weight: 700;
-      }
-    button {
-      background: none;
-      border: solid 1px;
-      border-radius: 5px;
-      font: inherit;
-      padding: 0.75em 2em;
-      margin: 10px;
-      color: grey;
-    }
-    button.active {
-        background-color:rgb(177, 18, 25);
-        color: white;
-    }
-    button.templates:focus{
-        background-color:rgb(177, 18, 25);
-        color: white;
-    }
-    .copyflash {
-        background-color: grey;
-    }
-    .padded {
-      padding: 0 10px;
-    }
-    </style>
 </body>
 </html>
