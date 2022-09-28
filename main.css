@@ -10,6 +10,7 @@
   grid-template-areas:
     "header header"
     "blocks blocks"
+    "loadProduct loadProduct"
     "old input"
     "manufacturer input"
     "html html"
@@ -23,6 +24,10 @@ a,
 button {
   color: #4fc08d;
 }
+.load-product {
+  grid-area: loadProduct;
+  padding: 5px;
+}
 .text-input {
   width: 720px;
   font-size: 18px;
@@ -30,6 +35,7 @@ button {
   line-height: 28px;
   grid-area: input;
   border: black solid 1px;
+  min-height: 50vh;
 }
 .product-number-input {
   line-height: 36px;
@@ -74,8 +80,6 @@ h3 {
 }
 .header {
   grid-area: header;
-  background-color: rgb(177, 18, 25);
-  color: white;
   padding: 10px;
   text-align: center;
   font-weight: 700;
@@ -86,7 +90,7 @@ button {
   border-radius: 5px;
   font: inherit;
   padding: 0.75em 2em;
-  margin: 10px;
+  margin: 5px;
   color: grey;
 }
 button.active {
@@ -111,5 +115,5 @@ button.delete {
   border-top: 1px solid black;
   padding: 20px;
   display: grid;
-  grid-template-columns: 1fr 5fr 1fr 1fr;
+  grid-template-columns: 1fr 1fr 1fr 5fr 1fr 1fr;
 }

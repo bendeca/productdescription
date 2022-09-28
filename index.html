@@ -13,14 +13,13 @@
   <div id="app">
     <div class="header">Veloplus Helper</div>
       <div class="blocks">
-          <h1>Template</h1>
           <div>
              <span v-for="template, key in this.templates">
                 <button class="ui button templates toggle" @click="activateTemplate(key)">{{ template.name }}</button>
              </span>   
              <span>
                 | <button class="ui button toggle" @click="resetContent()"><i class="ri-delete-bin-line"></i> Text Löschen</button>
-                <button class="ui button toggle save" @click="saveContent()" v-if=false><i class="ri-save-3-line"></i> Text lokal Speichern</button>
+                <button class="ui button toggle save" @click="saveContent()" v-if=true><i class="ri-download-line"></i> Text lokal Speichern</button>
              </span>   
           </div>
           <div>
@@ -61,20 +60,32 @@
       <div class="html-output" ><div>{{ htmlText }}</div>
         <button class="copy" @click="this.copyCode">Code Kopieren</button>
       </div>
-      <div class="current">
-        <div>
+      <div class="load-product">
+        <span>Produktnummer Eingeben: </span>
         <input type="text" class="product-number-input" @keyup.enter="getCurrentText" v-model="productNumber" placeholder="e.g. 33001234">
-        <button class="load-text" @click="getCurrentText">Aktueller Text Laden</button>
-        </div>
+        <button class="load-text" @click="getCurrentText">Aktueller Text Laden [Enter]</button>
+      </div>
+      <div class="current">
         <h2>{{ currentProduct }}</h2>
         <div class="current-text" v-html="this.currentText"></div>
       </div>
-      <div class="local-storage" v-if=false>
+      <div class="local-storage" v-if=true>
+        <h1>gespeicherte Text</h1>
+        <div class="saved-items">
+          <div>Id</div>
+          <div>Produktnummer</div>
+          <div>Titel</div>
+          <div>Text</div>
+          <div>Laden</div>
+          <div>Löschen</div>
+        </div>
         <div class="saved-items" v-for="savedItem,index in savedItems">
+          <div>{{ index }}</div>
           <div class="product-number">{{ savedItem[0] }}</div>
           <div>{{ savedItem[1] }}</div>
-          <button class="load-text" @click="loadContent(savedItem[1])"><i class="ri-download-line"></i> Laden</button>
-          <button class="load-text" @click="deleteFromLocalStorage(index)"><i class="ri-delete-bin-line"></i> Löschen</button>
+          <div>{{ savedItem[2] }}</div>
+          <button class="load-text" @click="loadContent(savedItem[2])"><i class="ri-upload-line"></i> Laden</button>
+          <button class="load-text" @click="deleteFromLocalStorage(index)"><i class="ri-delete-bin-line"></i> Eintrag Löschen</button>
         </div>
       </div>
     </div>
@@ -158,9 +169,10 @@
       },
       deleteFromLocalStorage: function(index) {
         this.savedItems.splice(index, 1);
+        localStorage.setItem("descriptions", JSON.stringify(this.savedItems));
       },
       saveContent: function() {
-        this.savedItems.push([ this.productNumber, this.htmlText ]);
+        this.savedItems.push([ this.productNumber, this.currentProduct, this.htmlText ]);
         localStorage.setItem("descriptions", JSON.stringify(this.savedItems));
         this.resetContent();
       },
