@@ -6,6 +6,7 @@
   <script>var exports = {};</script>
   <script src="https://unpkg.com/vue@2"></script>
   <script src="https://unpkg.com/@tinymce/tinymce-vue@3.2.8/lib/browser/tinymce-vue.min.js"></script>
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css" rel="stylesheet">
   <link rel="stylesheet" type="text/css" href="main.css" media="screen" />
 </head>
 <body>
@@ -18,8 +19,8 @@
                 <button class="ui button templates toggle" @click="activateTemplate(key)">{{ template.name }}</button>
              </span>   
              <span>
-                | <button class="ui button toggle delete" @click="resetContent()"> x Text Löschen</button>
-                <button class="ui button toggle save" @click="saveContent()" v-if=false>Text lokal Speichern</button>
+                | <button class="ui button toggle" @click="resetContent()"><i class="ri-delete-bin-line"></i> Text Löschen</button>
+                <button class="ui button toggle save" @click="saveContent()" v-if=true><i class="ri-save-3-line"></i> Text lokal Speichern</button>
              </span>   
           </div>
           <div>
@@ -68,12 +69,12 @@
         <h2>{{ currentProduct }}</h2>
         <div class="current-text" v-html="this.currentText"></div>
       </div>
-      <div class="local-storage" v-if=false>
+      <div class="local-storage" v-if=true>
         <div class="saved-items" v-for="savedItem,index in savedItems">
           <div class="product-number">{{ savedItem[0] }}</div>
           <div>{{ savedItem[1] }}</div>
-          <button class="load-text" @click="loadContent(savedItem[1])">Laden</button>
-          <button class="load-text" @click="deleteFromLocalStorage(index)">Löschen</button>
+          <button class="load-text" @click="loadContent(savedItem[1])"><i class="ri-download-line"></i> Laden</button>
+          <button class="load-text" @click="deleteFromLocalStorage(index)"><i class="ri-delete-bin-line"></i> Löschen</button>
         </div>
       </div>
     </div>
