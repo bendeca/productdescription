@@ -19,7 +19,7 @@
              </span>   
              <span>
                 | <button class="ui button toggle" @click="resetContent()"><i class="ri-delete-bin-line"></i> Text Löschen</button>
-                <button class="ui button toggle save" @click="saveContent()" v-if=true><i class="ri-download-line"></i> Text lokal Speichern</button>
+                <button class="ui button toggle save" @click="saveContent()" v-if=false><i class="ri-download-line"></i> Text lokal Speichern</button>
              </span>   
           </div>
           <div>
@@ -69,7 +69,7 @@
         <h2>{{ currentProduct }}</h2>
         <div class="current-text" v-html="this.currentText"></div>
       </div>
-      <div class="local-storage" v-if=true>
+      <div class="local-storage" v-if=false>
         <h1>gespeicherte Text</h1>
         <div class="saved-items">
           <div>Id</div>
