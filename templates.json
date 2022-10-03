@@ -7,19 +7,25 @@
   },
   "details": {
     "active": false,
-    "name": "Wichtige Eigenschaften",
+    "name": "Produkt XY im Detail",
     "content": "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate",
     "heading": "h2"
   },
   "specs": {
     "active": false,
-    "name": "Weitere Informationen",
+    "name": "Wichtigste Eigenschaften",
     "content": "",
     "heading": "h3"
   },
   "inTheBox": {
     "active": false,
     "name": "Lieferumfang",
+    "content": "",
+    "heading": "h3"
+  },
+  "moreInfo": {
+    "active": false,
+    "name": "Weitere Informationen",
     "content": "",
     "heading": "h3"
   },
