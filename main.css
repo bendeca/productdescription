@@ -20,6 +20,16 @@
   font-family: Open Sans, sans-serif;
   justify-items: center;
 }
+
+#explanation {
+  color: #2c3e50;
+  font-family: Open Sans, sans-serif;
+  margin-left: 80px;
+  padding: 10px 30px;
+  width: 1000px;
+  border: 1px solid black;
+}
+
 a,
 button {
   color: #4fc08d;
