@@ -10,7 +10,7 @@
   "standard": {
     "plugins": "lists paste textpattern code link",
     "menubar": false,
-    "toolbar": "undo redo | bold italic | bullist numlist | removeformat ",
+    "toolbar": "undo redo | bold italic | bullist numlist | link | removeformat",
     "browser_spellcheck": true,
     "inline": true,
     "paste_auto_cleanup_on_paste": true,
@@ -27,7 +27,7 @@
   "freestyle": {
     "plugins": "lists paste textpattern code link",
     "menubar": false,
-    "toolbar": "code | undo redo | bold italic | bullist numlist | removeformat | formatselect ",
+    "toolbar": "code | undo redo | bold italic | bullist numlist | link | removeformat | formatselect ",
     "browser_spellcheck": true,
     "inline": true,
     "paste_auto_cleanup_on_paste": true,
