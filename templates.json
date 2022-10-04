@@ -5,22 +5,10 @@
     "content": "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et",
     "heading": "h2"
   },
-  "nutshellSample": {
-    "active": false,
-    "name": "Auf den Punkt gebracht",
-    "content": "Der GIORNI WUNDERHELM ist ein leichter, gut belüfteter Trailhelm. Ausgestattet mit dem besonders stossabsorbierenden MIPS-Schutzsystem, schützt er den Kopf vor Rotationsbewegungen bei Stürzen.",
-    "heading": "h2"
-  },
   "details": {
     "active": false,
     "name": "Produkt XY im Detail",
     "content": "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate",
-    "heading": "h2"
-  },
-  "detailsSample": {
-    "active": false,
-    "name": "WUNDERHELM Velohelm im Detail",
-    "content": "Der WUNDERHELM ist der Schweizer Käse unter den Helmen, denn er verfügt über 20 Lüftungsöffnungen, was ihn zu einem besonders gut belüfteten Mountainbike-Helm macht. Der Helm kühlt so den Kopf der Biker:innen optimal und verbessert so deren Leistung auf langen Touren  oder anspruchsvollen Trails. Auf unserer Test-Tour wurde der Kühleffekt als sehr angenehm empfunden. Der Helm wurde zum Testsieger des Kassensturz Helm-Tests 2022 erkoren. Ausschlaggebend für das sehr gute Testurteil aufgrund waren die deutlich besseren Belüftungseigenschaften, als dies bei anderen Helmen der Fall war. Weiter wurde die Einfache Anpassung an die Kopfform hervorgehoben: Das Roc-Loc-5-Hinterkopf-Haltesystem ermöglicht eine einfache Höhen- und Weitenanpassung des Helms.",
     "heading": "h2"
   },
   "specs": {
@@ -29,34 +17,16 @@
     "content": "",
     "heading": "h3"
   },
-  "specsSample": {
-    "active": false,
-    "name": "Wichtigste Eigenschaften",
-    "content": "Sample Conten",
-    "heading": "h3"
-  },
   "inTheBox": {
     "active": false,
     "name": "Lieferumfang",
     "content": "",
     "heading": "h3"
   },
-  "inTheBoxSample": {
-    "active": false,
-    "name": "Lieferumfang",
-    "content": "Sample Content",
-    "heading": "h3"
-  },
   "moreInfo": {
     "active": false,
     "name": "Weitere Informationen",
     "content": "",
-    "heading": "h3"
-  },
-  "moreInfoSample": {
-    "active": false,
-    "name": "Weitere Informationen",
-    "content": "Sample Content",
     "heading": "h3"
   },
   "freestyle": {
