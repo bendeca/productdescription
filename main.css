@@ -15,7 +15,7 @@
     "manufacturer input"
     "html html"
     "copybutton copybutton"
-    "savedItems savedItems";
+    "notice notice";
   color: #2c3e50;
   font-family: Open Sans, sans-serif;
   justify-items: center;
@@ -29,6 +29,7 @@
   padding: 10px 30px;
   width: 1000px;
   border: 1px solid black;
+  grid-area: notice;
 }
 
 a,
@@ -77,6 +78,15 @@ button {
 .copy {
   grid-area: copybutton;
   width: 100%;
+  transition: background-color 100ms linear;
+}
+.html-code {
+  transition: background-color 300ms ease-in-out;
+  padding: 20px;
+}
+.copied {
+  background-color: green;
+  color: white;
 }
 .h2,
 h2 {
