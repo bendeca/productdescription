@@ -1,38 +1,14 @@
 {
-  "nutshell": {
-    "active": false,
-    "name": "Auf den Punkt gebracht",
-    "content": "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et",
-    "heading": "h2"
+  "basic": {
+    "name": "Einfach",
+    "text": "<h2>Auf den Punkt gebracht</h2><p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et.</p><h2>Produkt XY im Detail</h2><p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate</p>"
   },
-  "details": {
-    "active": false,
-    "name": "Produkt XY im Detail",
-    "content": "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate",
-    "heading": "h2"
-  },
-  "specs": {
-    "active": false,
-    "name": "Wichtigste Eigenschaften",
-    "content": "",
-    "heading": "h3"
-  },
-  "inTheBox": {
-    "active": false,
-    "name": "Lieferumfang",
-    "content": "",
-    "heading": "h3"
-  },
-  "moreInfo": {
-    "active": false,
-    "name": "Weitere Informationen",
-    "content": "",
-    "heading": "h3"
+  "complete": {
+    "name": "Vollständig",
+    "text": "<h2>Auf den Punkt gebracht</h2><p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et,</p><h2>Produkt XY im Detail</h2><p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate</p><h3>Wichtigste Eigenschaften</h3><p></p><h3>Lieferumfang<h3><p></p><h3>Weitere Informationen</h3><p></p>"
   },
   "freestyle": {
-    "active": false,
-    "name": "Freitext",
-    "content": "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate",
-    "heading": ""
+    "name": "Freier Text",
+    "text": "<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate</p>"
   }
 }

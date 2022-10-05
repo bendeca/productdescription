@@ -8,6 +8,7 @@
   <script src="https://unpkg.com/@tinymce/tinymce-vue@3.2.8/lib/browser/tinymce-vue.min.js"></script>
   <link href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css" rel="stylesheet">
   <link rel="stylesheet" type="text/css" href="main.css" media="screen" />
+  <title>Marketingtext Editor</title>
 </head>
 <body>
   <div id="app">
@@ -16,14 +17,13 @@
           <div>
             <p>Templates</p>
              <span v-for="template, key in this.templates">
-                <button class="ui button templates toggle" @click="activateTemplate(key)">{{ template.name }}</button>
+                <button class="ui button templates toggle" :class="{active: key == activeTemplate}" @click="activateTemplate(key)">{{ template.name }}</button>
              </span>   
              <span>
                 | <button class="ui button toggle" @click="resetContent()"><i class="ri-delete-bin-line"></i> Text Löschen</button>
-                <button class="ui button toggle save" @click="saveContent()" v-if=false><i class="ri-download-line"></i> Text lokal Speichern</button>
              </span>   
           </div>
-          <div>
+          <div v-if=false>
             <p style="margin-top: 50px;">Text-Blöcke</p>
              <span v-for="block in this.blocks">
                 <button class="ui button blocks toggle" :class={active:block.active} @click="block.active = !block.active" v-html="block.name">{{ block.name }}</button>
@@ -31,36 +31,15 @@
               </div>
       </div>
       <div class="text-input">
-          <div v-for="block,key in this.blocks">
-            <div v-if="block.active">
-              <div v-if="key == 'freestyle'">
-                <editor 
-                    v-model="block.content" 
-                    api-key="ekjnhz7itvvgp05ree5d2azoz5hobav2pbtzrkvpe7h18rmp"
-                    :init="tinymceConfig.freestyle"
-                />
-              </div>
-              <div v-else>
-                  <div>                
-                  <editor 
-                    :class="block.heading"
-                    v-model="block.name" 
-                    api-key="ekjnhz7itvvgp05ree5d2azoz5hobav2pbtzrkvpe7h18rmp"
-                    :init="tinymceConfig.header"
-                /> 
-              </div><div>
-                <editor 
-                    v-model="block.content" 
-                    api-key="ekjnhz7itvvgp05ree5d2azoz5hobav2pbtzrkvpe7h18rmp"
-                    :init="tinymceConfig.standard"
-                />
-                </div>
-            </div>
-          </div>
-        </div>
+          <editor 
+              v-model="description" 
+              api-key="ekjnhz7itvvgp05ree5d2azoz5hobav2pbtzrkvpe7h18rmp"
+              :init="tinymceConfig.standard"
+          />
      </div>
-      <div class="html-output" ><div>{{ htmlText }}</div>
-        <button class="copy" @click="this.copyCode">Code Kopieren</button>
+      <div class="html-output">
+        <div class="html-code" :class="{copied: copyButton != 'copy' }" >{{ description }}</div>
+        <button class="copy" @click="this.copyCode">{{ copyButton == 'copy' ? 'Code Kopieren' : 'ist Kopiert!' }}</button>
       </div>
       <div class="load-product">
         <span>Produktnummer Eingeben: </span>
@@ -70,25 +49,6 @@
       <div class="current">
         <h2>{{ currentProduct }}</h2>
         <div class="current-text" v-html="this.currentText"></div>
-      </div>
-      <div class="local-storage" v-if=false>
-        <h1>gespeicherte Text</h1>
-        <div class="saved-items">
-          <div>Id</div>
-          <div>Produktnummer</div>
-          <div>Titel</div>
-          <div>Text</div>
-          <div>Laden</div>
-          <div>Löschen</div>
-        </div>
-        <div class="saved-items" v-for="savedItem,index in savedItems">
-          <div>{{ index }}</div>
-          <div class="product-number">{{ savedItem[0] }}</div>
-          <div>{{ savedItem[1] }}</div>
-          <div>{{ savedItem[2] }}</div>
-          <button class="load-text" @click="loadContent(savedItem[2])"><i class="ri-upload-line"></i> Laden</button>
-          <button class="load-text" @click="deleteFromLocalStorage(index)"><i class="ri-delete-bin-line"></i> Eintrag Löschen</button>
-        </div>
       </div>
     </div>
     <div id="explanation">
@@ -103,7 +63,7 @@
 <li>Keine direkte Ansprache der Kunden (“Sie können diesen Helm verwenden für…”) im Text sondern neutrale Formulierungen verwenden</li>
 <li>Regeln zur Texterstellung werden von den Handbuch-Vorgaben übernommen (Abkürzungen, Kopplungen etc.)</li>
 <br/>
-<li><strong>Ergänzung für Eigenprodukte:</strong> Mehr Bilder, auführlichere Textbeschriebe, Entstehungsgeschickte, Verweis zu Videos, etc.</li>
+<li><strong>Ergänzung für Eigenprodukte:</strong> Mehr Bilder, auführlichere Textbeschriebe, Entstehungsgeschichte, Verweis zu Videos, etc.</li>
         </ul>
       </p>
       <h3>Weiterführende Vorgaben und Anleitung im Detail</h3>
@@ -125,40 +85,30 @@
         currentText: '',
         currentProduct: '',
         productNumber: '',
-        product: { number: '', description: ''},
-        templates: {
-            advanced: { name: 'Vollständig' },
-            basic: { name: 'Einfach' },
-            //advancedSample: { name: 'Erweitert Beispiel' },
-            freestyle: { name: 'Freier Text' }
-        },
-        blocks: JSON.parse(JSON.stringify(templates_json)),
-        savedItems: '',
+        templates: JSON.parse(JSON.stringify(templates_json)),
+        description: '',
+        activeTemplate: '',
+        copyButton: 'copy',
       },
-  computed: {
-    htmlText: function () {
-      let html = '';
-      for(const text in this.blocks) {
-        if(this.blocks[text].content && this.blocks[text].active) {
-          if(text == 'freestyle'){
-            html = html + '<p>' + `${this.blocks[text].content}` + '</p><br>';
-          } else {
-            html = html + '<'+ `${this.blocks[text].heading}` + '>' + `${this.blocks[text].name}` + '</'+ `${this.blocks[text].heading}` + '><p>' + `${this.blocks[text].content}` + '</p><br>';
-          }
-        }
-      }
-      return html;
-    },
-  },
   mounted() {
-    this.savedItems = localStorage.getItem("descriptions")
-      ? JSON.parse(localStorage.getItem("descriptions"))
-      : [];
+    this.activeTemplate = localStorage.getItem("activeTemplate");
+    if(this.activeTemplate){
+      this.description = localStorage.getItem(this.activeTemplate);
+    }
+  },
+  watch: {
+    description: function(newText, oldText) {
+        localStorage.setItem(this.activeTemplate, newText);
+    },
+    activeTemplate: function(newTemplate, oldTemplate) {
+        localStorage.setItem("activeTemplate", newTemplate);
+    }
   },
   methods: {
       copyCode: function(event) {
-        event.currentTarget.innerHTML = "ist Kopiert!";
-        navigator.clipboard.writeText(this.htmlText);
+        this.copyButton = "copied";
+        navigator.clipboard.writeText(this.description);
+        setTimeout(() => { this.copyButton = "copy" }, 300);
       },
       getCurrentText: async function() {
         console.log(this.productNumber);
@@ -180,53 +130,27 @@
       .then((data) => { this.currentText = data.data.product.texts.description; this.currentProduct = data.data.product.texts.title});
       },
       resetContent: function() {
-        this.blocks = JSON.parse(JSON.stringify(templates_json));
-      },
-      loadContent: function(content) {
-        this.resetContent();
-        this.activateTemplate('freestyle');
-        this.blocks.freestyle.content = content;
-      },
-      deleteFromLocalStorage: function(index) {
-        this.savedItems.splice(index, 1);
-        localStorage.setItem("descriptions", JSON.stringify(this.savedItems));
-      },
-      saveContent: function() {
-        this.savedItems.push([ this.productNumber, this.currentProduct, this.htmlText ]);
-        localStorage.setItem("descriptions", JSON.stringify(this.savedItems));
-        this.resetContent();
+        this.description = '';
+        this.activeTemplate = '';
+        localStorage.clear();
       },
       activateTemplate: function(template) {
+        this.activeTemplate = template;
+        if(localStorage.getItem(template)) {
+          this.description = localStorage.getItem(template);
+        } else {
           if(template == 'basic') {
-              this.blocks.nutshell.active = true;
-              this.blocks.details.active = true;
-              this.blocks.specs.active = false;
-              this.blocks.inTheBox.active = false;
-              this.blocks.moreInfo.active = false;
-              this.blocks.freestyle.active = false;
-
+              this.description = this.templates.basic.text;
           }
-          if(template == 'advanced') {
-              this.blocks.nutshell.active = true;
-              this.blocks.details.active = true;
-              this.blocks.specs.active = true;
-              this.blocks.inTheBox.active = true;
-              this.blocks.moreInfo.active = true;
-              this.blocks.freestyle.active = false;
-
+          if(template == 'complete') {
+              this.description = this.templates.complete.text;
           }
-
           if(template == 'freestyle') {
-              this.blocks.nutshell.active = false;
-              this.blocks.details.active = false;
-              this.blocks.review.active = false;
-              this.blocks.specs.active = false;
-              this.blocks.inTheBox.active = false;
-              this.blocks.moreInfo.active = false;
-              this.blocks.freestyle.active = true;
+              this.description = this.templates.freestyle.text;
           }
+        }
       }
-  }
+    }
   }
     )
   </script>
