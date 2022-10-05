@@ -83,6 +83,8 @@ button {
 .html-code {
   transition: background-color 300ms ease-in-out;
   padding: 20px;
+  border-radius: 10px;
+  margin: 5px;
 }
 .copied {
   background-color: green;
