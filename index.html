@@ -71,8 +71,8 @@
     </div>  
 
   <script type="module">
-    import tinyconfig_json from "./tinymce_config.json" assert { type: 'json' };
-    import templates_json from "./templates.json" assert { type: 'json' };
+    // import tinyconfig_json from "./tinymce_config.json" assert { type: 'json' };
+    // import templates_json from "./templates.json" assert { type: 'json' };
     
     var app = new Vue({
 
@@ -80,21 +80,45 @@
         components: {
         'editor': Editor 
         },
-      data: {
-        tinymceConfig: tinyconfig_json,
-        currentText: '',
-        currentProduct: '',
-        productNumber: '',
-        templates: JSON.parse(JSON.stringify(templates_json)),
-        description: '',
-        activeTemplate: '',
-        copyButton: 'copy',
+      data:  function() {
+        return {
+          tinymceConfig: {
+            standard: {
+              plugins: 'lists paste textpattern code link table',
+              menubar: false,
+              toolbar: 'code | undo redo | bold italic | bullist numlist | link | removeformat | table | formatselect ',
+              browser_spellcheck: true,
+              inline: true,
+              paste_auto_cleanup_on_paste: true,
+              paste_remove_styles: true,
+              paste_remove_styles_if_webkit: true,
+              paste_strip_class_attributes: true,
+              block_formats: 'Paragraph=p;Heading 2=h2;Heading 3=h3;',
+              content_style: '.mce-content-body { padding-left: 10px }',
+              textpattern_patterns: [
+                { start: '1. ', cmd: 'InsertOrderedList' },
+                { start: '* ', cmd: 'InsertUnorderedList' },
+                { start: '- ', cmd: 'InsertUnorderedList' }
+              ]
+            }
+          },
+          currentText: '',
+          currentProduct: '',
+          productNumber: '',
+          templates: '',
+          description: '',
+          activeTemplate: '',
+          copyButton: 'copy',
+        }
       },
   mounted() {
     this.activeTemplate = localStorage.getItem("activeTemplate");
     if(this.activeTemplate){
       this.description = localStorage.getItem(this.activeTemplate);
     }
+    fetch('./templates.json')
+          .then((response) => response.json())
+          .then((json) => this.templates = json);
   },
   watch: {
     description: function(newText, oldText) {
