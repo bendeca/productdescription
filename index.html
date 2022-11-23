@@ -112,13 +112,13 @@
         }
       },
   mounted() {
+    fetch('./templates.json')
+      .then((response) => response.json())
+      .then((json) => this.templates = json);
     this.activeTemplate = localStorage.getItem("activeTemplate");
     if(this.activeTemplate){
       this.description = localStorage.getItem(this.activeTemplate);
     }
-    fetch('./templates.json')
-          .then((response) => response.json())
-          .then((json) => this.templates = json);
   },
   watch: {
     description: function(newText, oldText) {
