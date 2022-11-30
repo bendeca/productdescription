@@ -71,6 +71,7 @@
     </div>  
 
   <script type="module">
+    // the function 'assert {...} does not work on Firefox'
     // import tinyconfig_json from "./tinymce_config.json" assert { type: 'json' };
     // import templates_json from "./templates.json" assert { type: 'json' };
     
@@ -151,7 +152,12 @@
       })
       })
       .then(response => response.json())
-      .then((data) => { this.currentText = data.data.product.texts.description; this.currentProduct = data.data.product.texts.title});
+      .then((data) => { 
+        this.currentText = data.data.product.texts.description;
+        this.currentProduct = data.data.product.texts.title;
+        this.activateTemplate('freestyle');
+        this.description = data.data.product.texts.description;
+        });
       },
       resetContent: function() {
         this.description = '';
