@@ -45,6 +45,7 @@
         <span>Produktnummer Eingeben: </span>
         <input type="text" class="product-number-input" @keyup.enter="getCurrentText" v-model="productNumber" placeholder="e.g. 33001234">
         <button class="load-text" @click="getCurrentText">Aktuellen Text Laden [Enter]</button>
+        <button class="load-text" @click="copyCurrentTextToEditor"><i class="ri-arrow-right-fill"></i> Text in den Editor Kopieren</button>
       </div>
       <div class="current">
         <h2>{{ currentProduct }}</h2>
@@ -155,9 +156,11 @@
       .then((data) => { 
         this.currentText = data.data.product.texts.description;
         this.currentProduct = data.data.product.texts.title;
-        this.activateTemplate('freestyle');
-        this.description = data.data.product.texts.description;
         });
+      },
+      copyCurrentTextToEditor: function() {
+        this.activateTemplate('freestyle');
+        this.description = this.currentText;
       },
       resetContent: function() {
         this.description = '';
