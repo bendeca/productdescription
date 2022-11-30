@@ -45,6 +45,7 @@
         <span>Produktnummer Eingeben: </span>
         <input type="text" class="product-number-input" @keyup.enter="getCurrentText" v-model="productNumber" placeholder="e.g. 33001234">
         <button class="load-text" @click="getCurrentText">Aktuellen Text Laden [Enter]</button>
+        <button class="load-text" @click="copyCurrentTextToEditor"><i class="ri-arrow-right-fill"></i> Text in den Editor Kopieren</button>
       </div>
       <div class="current">
         <h2>{{ currentProduct }}</h2>
@@ -71,6 +72,7 @@
     </div>  
 
   <script type="module">
+    // the function 'assert {...} does not work on Firefox'
     // import tinyconfig_json from "./tinymce_config.json" assert { type: 'json' };
     // import templates_json from "./templates.json" assert { type: 'json' };
     
@@ -151,7 +153,14 @@
       })
       })
       .then(response => response.json())
-      .then((data) => { this.currentText = data.data.product.texts.description; this.currentProduct = data.data.product.texts.title});
+      .then((data) => { 
+        this.currentText = data.data.product.texts.description;
+        this.currentProduct = data.data.product.texts.title;
+        });
+      },
+      copyCurrentTextToEditor: function() {
+        this.activateTemplate('freestyle');
+        this.description = this.currentText;
       },
       resetContent: function() {
         this.description = '';
