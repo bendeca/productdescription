@@ -42,12 +42,19 @@ button {
 }
 .text-input {
   width: 720px;
-  font-size: 18px;
+  font-size: 14px;
   padding: 20px;
-  line-height: 28px;
+  line-height: 21px;
   grid-area: input;
   border: black solid 1px;
   min-height: 50vh;
+}
+
+.text-input strong {
+  font-size: 14px;
+  line-height: 21px;
+  font-family: "Open Sans", sans-serif;
+  font-weight: 700;
 }
 .product-number-input {
   line-height: 36px;
@@ -65,12 +72,18 @@ button {
   color: black;
 }
 .current-text {
-  width: 720px;
-  font-size: 18px;
+  width: 750px;
+  font-size: 14px;
   padding: 20px;
-  line-height: 28px;
+  line-height: 21px;
   grid-area: input;
   border: black solid 1px;
+}
+.current-text strong {
+  font-size: 14px;
+  line-height: 21px;
+  font-family: "Open Sans", sans-serif;
+  font-weight: 700;
 }
 .current {
   grid-area: old;
