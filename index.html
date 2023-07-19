@@ -33,7 +33,11 @@
              </span>   
               </div>
       </div>
+
       <div class="text-input">
+      <div v-if=promtApiKey><label style="font-family: Arial, Helvetica, sans-serif; font-size: medium;">Add openAI API key here</label>
+     <input type="text" id="protect-key"> </div>
+
           <editor 
               v-model="description" 
               api-key="ekjnhz7itvvgp05ree5d2azoz5hobav2pbtzrkvpe7h18rmp"
@@ -78,7 +82,8 @@
     // the function 'assert {...} does not work on Firefox'
     // import tinyconfig_json from "./tinymce_config.json" assert { type: 'json' };
     // import templates_json from "./templates.json" assert { type: 'json' };
-    
+    import * as config from './env.js'
+
     var app = new Vue({
 
       el: '#app',
@@ -89,9 +94,16 @@
         return {
           tinymceConfig: {
             standard: {
-              plugins: 'lists paste textpattern code link table',
+              plugins: 'lists paste textpattern code link table wordcount',
               menubar: false,
-              toolbar: 'code | undo redo | bold italic | bullist numlist | link | removeformat | table | formatselect ',
+              toolbar: 'code | undo redo | bold italic | ai  | bullist numlist | link | removeformat | table | formatselect | wordcount ',
+              toolbar_groups: {
+                ai: {
+                  icon: 'sharpen',
+                  tooltip: 'AI',
+                  items: 'openAIFormat | openAIBeautify | openAISummary'
+                }
+              },
               browser_spellcheck: true,
               inline: true,
               paste_auto_cleanup_on_paste: true,
@@ -104,7 +116,102 @@
                 { start: '1. ', cmd: 'InsertOrderedList' },
                 { start: '* ', cmd: 'InsertUnorderedList' },
                 { start: '- ', cmd: 'InsertUnorderedList' }
-              ]
+              ],
+              setup: (editor) => {
+                editor.ui.registry.addButton("openAIFormat", {
+                  text: "formatieren (AI)",
+                  icon: "template",
+                  tooltip: "Ganzer Text nach Standard formatieren (AI)",
+                  enabled: true,
+                  onAction: (_) => {
+                    const api_key = config.OPENAI_API_KEY != "" ? config.OPENAI_API_KEY : document.getElementById("protect-key").value;
+                    const selection = tinymce.activeEditor.getContent();
+                    const prompt = "Bitte generiere aus folgenden informationen einen strukurierten Produkttext in HTML Format mit der folgenden Struktur:\n<h2>Auf den Punkt gebracht</h2>\n<p>##in 1-2 Sätzen die wichtigsten eigentschften kurz zusammengefasst. ##</p>\n<h2>##Produkttitel## im Detail</h2>\n##produktdetails, 1-2 Paragraphe lang mit den wichtigsten Informationen. erklärung der Eigentschaften und freundlich formuliert##\n<h3>Wichtigste Eigenschaften</h3>\n## eine <ul> liste mit den wichtigsten Eigenschaften\nDer Produkttext sollte freundlich, informativ und nicht zu lange sein. Benutze bitte die Schweizer Rechtschreibung mit doppel-s  (ss) statt scharfem s (ß)\nInformationen für den Text:"+selection
+                    const ChatGPT = {
+                      model: "gpt-3.5-turbo",
+                      messages:[ { "role": "user", "content": prompt }],
+                      temperature: 0,
+                      max_tokens: 2000,
+                    };
+                    fetch("https://api.openai.com/v1/chat/completions", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                            Authorization: `Bearer ${api_key}`
+                        },
+                        body: JSON.stringify(ChatGPT)
+                    }).then(res => res.json()).then(data => {
+                        var reply = data.choices[0].message.content;
+                        console.log(reply);
+                        editor.setContent(reply);
+                    }).catch(error => {
+                        console.log("something went wrong");
+                    })
+                  },
+                });
+                editor.ui.registry.addButton("openAIBeautify", {
+                  text: "umformulieren (AI)",
+                  icon: "reload",
+                  tooltip: "Ausgewählter Text neu formulieren (AI)",
+                  enabled: true,
+                  onAction: (_) => {
+                    const api_key = config.OPENAI_API_KEY != "" ? config.OPENAI_API_KEY : document.getElementById("protect-key").value;
+                    const selection = tinymce.activeEditor.selection.getContent();
+                    const prompt = "Bitte folgenden Produkttext auf Rechtschreibung prüfen und schöner Formulieren, ohne die Formatierung zu ändern. Aussagen dürfen nicht verändert werden. Der Produkttext sollte freundlich, informativ und nicht zu lange sein. Benutze bitte die Schweizer Rechtschreibung mit doppel-s  (ss) statt scharfem s (ß)\nInformationen für den Text:"+selection
+                    const ChatGPT = {
+                      model: "gpt-3.5-turbo",
+                      messages:[ { "role": "user", "content": prompt }],
+                      temperature: 1,
+                      max_tokens: 2000,
+                    };
+                    fetch("https://api.openai.com/v1/chat/completions", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                            Authorization: `Bearer ${api_key}`
+                        },
+                        body: JSON.stringify(ChatGPT)
+                    }).then(res => res.json()).then(data => {
+                        var reply = data.choices[0].message.content;
+                        console.log(reply);
+                        editor.selection.setContent(reply);
+                    }).catch(error => {
+                        console.log("something went wrong");
+                    })
+                  },
+                });
+                editor.ui.registry.addButton("openAISummary", {
+                  text: "zusammenfassen (AI)",
+                  icon: "vertical-align",
+                  tooltip: "Zusammenfassen (AI)",
+                  enabled: true,
+                  onAction: (_) => {
+                    const api_key = config.OPENAI_API_KEY != "" ? config.OPENAI_API_KEY : document.getElementById("protect-key").value;
+                    const selection = tinymce.activeEditor.getContent();
+                    const prompt = "Bitte fasse folgenden Produkttext auf ungefähr 100 Wörter zusammen. Benutze bitte die Schweizer Rechtschreibung mit doppel-s  (ss) statt scharfem s (ß)\nInformationen für den Text:"+selection
+                    const ChatGPT = {
+                      model: "gpt-3.5-turbo",
+                      messages:[ { "role": "user", "content": prompt }],
+                      temperature: 0.4,
+                      max_tokens: 2000,
+                    };
+                    fetch("https://api.openai.com/v1/chat/completions", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                            Authorization: `Bearer ${api_key}`
+                        },
+                        body: JSON.stringify(ChatGPT)
+                    }).then(res => res.json()).then(data => {
+                        var reply = data.choices[0].message.content;
+                        console.log(reply);
+                        editor.setContent(reply);
+                    }).catch(error => {
+                        console.log("something went wrong");
+                    })
+                  },
+                });
+              }
             }
           },
             formats: {
@@ -120,6 +227,7 @@
           description: '',
           activeTemplate: '',
           copyButton: 'copy',
+          promtApiKey: config.OPENAI_API_KEY ? false : true
         }
       },
   mounted() {
