@@ -55,7 +55,6 @@
         <button class="load-text" @click="copyCurrentTextToEditor"><i class="ri-arrow-right-fill"></i> Text in den Editor Kopieren</button>
       </div>
       <div class="current">
-        <h2>{{ currentProduct }}</h2>
         <div class="current-text" v-html="this.currentText"></div>
       </div>
     </div>
@@ -255,24 +254,19 @@
       },
       getCurrentText: async function() {
         console.log(this.productNumber);
-        return await fetch('https://api.veloplus.ch/graphql', {
-          method: 'POST',
+        const api_key = config.POLYNORM_API_KEY != "" ? config.POLYNORM_API_KEY : document.getElementById("protect-key").value;
+
+        return await fetch('https://shoptest.veloplus.ch/api/item/text/' + this.productNumber, {
+          method: 'GET',
           headers: {
-              'Accept-Encoding': 'gzip, deflate, br',
-              'Content-Type': 'application/json',
               'Accept': 'application/json',
-              'Connection': 'keep-alive',
-              'DNT': '1',
-              'Origin': 'https://api.veloplus.ch'
-          },
-          body: JSON.stringify({
-              'query': ' { product(productId: ' + this.productNumber + ') { texts {title description}}}'
-      })
+              Authorization: `Bearer ${api_key}`
+          }
       })
       .then(response => response.json())
       .then((data) => { 
-        this.currentText = data.data.product.texts.description;
-        this.currentProduct = data.data.product.texts.title;
+        this.currentText = data.text;
+        this.currentProduct = "Artikel";
         });
       },
       copyCurrentTextToEditor: function() {
