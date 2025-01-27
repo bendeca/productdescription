@@ -256,7 +256,7 @@
         console.log(this.productNumber);
         const api_key = config.POLYNORM_API_KEY != "" ? config.POLYNORM_API_KEY : document.getElementById("protect-key").value;
 
-        return await fetch('https://embed-shoptest.veloplus.ch/api/item/text/' + this.productNumber, {
+        return await fetch('https://embed.veloplus.ch/api/item/text/' + this.productNumber, {
           method: 'GET',
           headers: {
               'Accept': 'application/json',
