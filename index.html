@@ -282,6 +282,11 @@
               'Accept': 'application/json',
           },
       })
+      .then(response => response.json())
+      .then((data) => { 
+        
+        });
+
       },
 
       copyCurrentTextToEditor: function() {
