@@ -282,12 +282,6 @@
               'Accept': 'application/json',
           },
       })
-      .then(response => response.json())
-      .then((data) => { 
-        this.currentText = data.text;
-        this.currentProduct = data.item_id;
-        this.currentBaseProduct = data.reference_item_id;
-        });
       },
 
       copyCurrentTextToEditor: function() {
