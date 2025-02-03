@@ -47,6 +47,7 @@
       <div class="html-output">
         <div class="html-code" :class="{copied: copyButton != 'copy' }" >{{ description }}</div>
         <button class="copy" @click="this.copyCode">{{ copyButton == 'copy' ? 'Code Kopieren' : 'ist Kopiert!' }}</button>
+        <button class="copy" @click="this.writeCurrentTextToBase" hidden>{{ copyButton == 'copy' ? 'Text ins Comarch speichern, Basisnummer' : 'Gespeichert!' }}</button>
       </div>
       <div class="load-product">
         <span>Produktnummer Eingeben: </span>
@@ -221,6 +222,7 @@
           },
           currentText: '',
           currentProduct: '',
+          currentBaseProduct: '',
           productNumber: '',
           templates: '',
           description: '',
@@ -256,19 +258,32 @@
         console.log(this.productNumber);
         const api_key = config.POLYNORM_API_KEY != "" ? config.POLYNORM_API_KEY : document.getElementById("protect-key").value;
 
-        return await fetch('https://helper.veloplus.ch/marketingtext/textManager.php?item_id=' + this.productNumber, {
+        return await fetch('https://helper.veloplus.ch/marketingtext/getText.php?item_id=' + this.productNumber, {
           method: 'GET',
           headers: {
               'Accept': 'application/json',
-              'Authorization': `Bearer ${api_key}`
           }
       })
       .then(response => response.json())
       .then((data) => { 
         this.currentText = data.text;
-        this.currentProduct = "Artikel";
+        this.currentProduct = data.item_id;
+        this.currentBaseProduct = data.reference_item_id;
         });
       },
+
+      writeCurrentTextToBase: async function() {
+        console.log(this.productNumber);
+        const api_key = config.POLYNORM_API_KEY != "" ? config.POLYNORM_API_KEY : document.getElementById("protect-key").value;
+
+      return await fetch('https://helper.veloplus.ch/marketingtext/writeText.php?item_id=' + this.productNumber + '&text=' + this.description, {
+          method: 'POST',
+          headers: {
+              'Accept': 'application/json',
+          },
+      })
+      },
+
       copyCurrentTextToEditor: function() {
         this.activateTemplate('freestyle');
         this.description = this.currentText;
