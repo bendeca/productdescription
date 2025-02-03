@@ -227,6 +227,7 @@
           templates: '',
           description: '',
           activeTemplate: '',
+          answer: '',
           copyButton: 'copy',
           promtApiKey: config.OPENAI_API_KEY ? false : true
         }
@@ -284,7 +285,7 @@
       })
       .then(response => response.json())
       .then((data) => { 
-        
+        this.answer = data;
         });
 
       },
