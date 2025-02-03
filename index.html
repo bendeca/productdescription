@@ -277,7 +277,7 @@
         const api_key = config.POLYNORM_API_KEY != "" ? config.POLYNORM_API_KEY : document.getElementById("protect-key").value;
 
       return await fetch('https://helper.veloplus.ch/marketingtext/writeText.php?item_id=' + this.productNumber + '&text=' + this.description, {
-          method: 'POST',
+          method: 'GET',
           headers: {
               'Accept': 'application/json',
           },
