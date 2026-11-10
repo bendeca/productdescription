@@ -45,9 +45,9 @@
           />
      </div>
       <div class="html-output">
-        <div class="html-code" :class="{copied: copyButton != 'copy' }" >{{ description }}</div>
+        <div class="html-code" :class="{copied: copyButton != 'copy' || saveState == 'saved' }" >{{ description }}</div>
         <button class="copy" @click="this.copyCode" hidden>{{ copyButton == 'copy' ? 'Code Kopieren' : 'ist Kopiert!' }}</button>
-        <button class="copy" @click="this.writeCurrentTextToBase" :disabled="saveState == 'saving'">{{ {idle: 'Text ins Comarch speichern' + (currentBaseProduct ? ', Basisnummer: ' + currentBaseProduct : ''), saving: 'Speichert...', saved: 'Gespeichert!', error: 'Fehler beim Speichern'}[saveState] }}</button>
+        <button class="copy" :class="{copied: saveState == 'saved'}" @click="this.writeCurrentTextToBase" :disabled="saveState == 'saving'">{{ {idle: 'Text ins Comarch speichern' + (currentBaseProduct ? ', Basisnummer: ' + currentBaseProduct : ''), saving: 'Speichert...', saved: 'Gespeichert!', error: 'Fehler beim Speichern'}[saveState] }}</button>
       </div>
       <div class="load-product">
         <span>Produktnummer Eingeben: </span>
@@ -335,7 +335,7 @@
           this.saveState = 'error';
           alert("Speichern fehlgeschlagen: " + error.message);
         }
-        setTimeout(() => { this.saveState = 'idle' }, 3000);
+        setTimeout(() => { this.saveState = 'idle' }, this.saveState == 'saved' ? 1500 : 3000);
       },
 
       copyCurrentTextToEditor: function() {
