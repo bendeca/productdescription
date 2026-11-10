@@ -86,7 +86,7 @@
 
     // Gemini API (OpenAI-compatible endpoint)
     const GEMINI_URL = "https://generativelanguage.googleapis.com/v1beta/openai/chat/completions";
-    const GEMINI_MODEL = config.GEMINI_MODEL || "gemini-2.5-flash";
+    const GEMINI_MODEL = config.GEMINI_MODEL || "gemini-3.8-flash";
 
     function askGemini(prompt, temperature) {
       const api_key = config.GEMINI_API_KEY != "" ? config.GEMINI_API_KEY : document.getElementById("protect-key").value;
