@@ -47,7 +47,7 @@
       <div class="html-output">
         <div class="html-code" :class="{copied: copyButton != 'copy' }" >{{ description }}</div>
         <button class="copy" @click="this.copyCode" hidden>{{ copyButton == 'copy' ? 'Code Kopieren' : 'ist Kopiert!' }}</button>
-        <button class="copy" @click="this.writeCurrentTextToBase">{{ copyButton == 'copy' ? 'Text ins Comarch speichern, Basisnummer' : 'Gespeichert!' }}</button>
+        <button class="copy" @click="this.writeCurrentTextToBase" :disabled="saveState == 'saving'">{{ {idle: 'Text ins Comarch speichern, Basisnummer', saving: 'Speichert...', saved: 'Gespeichert!', error: 'Fehler beim Speichern'}[saveState] }}</button>
       </div>
       <div class="load-product">
         <span>Produktnummer Eingeben: </span>
@@ -263,6 +263,7 @@
           activeTemplate: '',
           answer: '',
           copyButton: 'copy',
+          saveState: 'idle',
           promtApiKey: config.GEMINI_API_KEY ? false : true
         }
       },
@@ -308,20 +309,33 @@
       },
 
       writeCurrentTextToBase: async function() {
-        console.log(this.productNumber);
-        const api_key = config.POLYNORM_API_KEY != "" ? config.POLYNORM_API_KEY : document.getElementById("protect-key").value;
-
-      return await fetch('https://helper.veloplus.ch/marketingtext/writeText.php?item_id=' + encodeURIComponent(this.productNumber) + '&text=' + encodeURIComponent(this.description), {
-          method: 'GET',
-          headers: {
+        if (!this.productNumber) {
+          alert("Bitte zuerst eine Produktnummer eingeben.");
+          return;
+        }
+        this.saveState = 'saving';
+        try {
+          const response = await fetch('https://helper.veloplus.ch/marketingtext/writeText.php?item_id=' + encodeURIComponent(this.productNumber), {
+            method: 'POST',
+            headers: {
               'Accept': 'application/json',
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ text: this.description })
+          });
+          const data = await response.json().catch(() => ({}));
+          this.answer = data;
+          if (!response.ok || (data.errors && data.errors.length)) {
+            const detail = (data.detail && (typeof data.detail == 'string' ? data.detail : JSON.stringify(data.detail))) || (data.errors || []).map(e => e.item_id + ': ' + e.detail).join('\n') || ('HTTP ' + response.status);
+            throw new Error(detail);
           }
-      })
-      .then(response => response.json())
-      .then((data) => { 
-        this.answer = data;
-        });
-
+          this.saveState = 'saved';
+        } catch (error) {
+          console.log("save failed", error);
+          this.saveState = 'error';
+          alert("Speichern fehlgeschlagen: " + error.message);
+        }
+        setTimeout(() => { this.saveState = 'idle' }, 3000);
       },
 
       copyCurrentTextToEditor: function() {
