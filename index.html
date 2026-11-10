@@ -35,7 +35,7 @@
       </div>
 
       <div class="text-input">
-      <div v-if=promtApiKey><label style="font-family: Arial, Helvetica, sans-serif; font-size: medium;">Add openAI API key here</label>
+      <div v-if=promtApiKey><label style="font-family: Arial, Helvetica, sans-serif; font-size: medium;">Add Gemini API key here</label>
      <input type="text" id="protect-key"> </div>
 
           <editor 
@@ -84,6 +84,33 @@
     // import templates_json from "./templates.json" assert { type: 'json' };
     import * as config from './env.js'
 
+    // Gemini API (OpenAI-compatible endpoint)
+    const GEMINI_URL = "https://generativelanguage.googleapis.com/v1beta/openai/chat/completions";
+    const GEMINI_MODEL = config.GEMINI_MODEL || "gemini-2.5-flash";
+
+    function askGemini(prompt, temperature) {
+      const api_key = config.GEMINI_API_KEY != "" ? config.GEMINI_API_KEY : document.getElementById("protect-key").value;
+      return fetch(GEMINI_URL, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${api_key}`
+        },
+        body: JSON.stringify({
+          model: GEMINI_MODEL,
+          messages: [{ role: "user", content: prompt }],
+          temperature: temperature,
+          max_tokens: 8000,
+        })
+      }).then(res => res.json()).then(data => {
+        if (data.error || !data.choices) {
+          throw new Error(JSON.stringify(data.error || data));
+        }
+        // strip ```html fences in case the model wraps its answer
+        return data.choices[0].message.content.replace(/^\s*```(?:html)?\s*/i, "").replace(/\s*```\s*$/, "");
+      });
+    }
+
     var app = new Vue({
 
       el: '#app',
@@ -101,7 +128,7 @@
                 ai: {
                   icon: 'sharpen',
                   tooltip: 'AI',
-                  items: 'openAIFormat | openAIBeautify | openAISummary'
+                  items: 'aiFormat | aiBeautify | aiSummary'
                 }
               },
               browser_spellcheck: true,
@@ -118,96 +145,54 @@
                 { start: '- ', cmd: 'InsertUnorderedList' }
               ],
               setup: (editor) => {
-                editor.ui.registry.addButton("openAIFormat", {
+                editor.ui.registry.addButton("aiFormat", {
                   text: "formatieren (AI)",
                   icon: "template",
                   tooltip: "Ganzer Text nach Standard formatieren (AI)",
                   enabled: true,
                   onAction: (_) => {
-                    const api_key = config.OPENAI_API_KEY != "" ? config.OPENAI_API_KEY : document.getElementById("protect-key").value;
                     const selection = tinymce.activeEditor.getContent();
                     const prompt = "Bitte generiere aus folgenden informationen einen strukurierten Produkttext in HTML Format mit der folgenden Struktur:\n<h2>Auf den Punkt gebracht</h2>\n<p>##in 1-2 Sätzen die wichtigsten eigentschften kurz zusammengefasst. ##</p>\n<h2>##Produkttitel## im Detail</h2>\n##produktdetails, 1-2 Paragraphe lang mit den wichtigsten Informationen. erklärung der Eigentschaften und freundlich formuliert##\n<h3>Wichtigste Eigenschaften</h3>\n## eine <ul> liste mit den wichtigsten Eigenschaften\nDer Produkttext sollte freundlich, informativ und nicht zu lange sein. Benutze bitte die Schweizer Rechtschreibung mit doppel-s  (ss) statt scharfem s (ß)\nInformationen für den Text:"+selection
-                    const ChatGPT = {
-                      model: "gpt-3.5-turbo",
-                      messages:[ { "role": "user", "content": prompt }],
-                      temperature: 0,
-                      max_tokens: 2000,
-                    };
-                    fetch("https://api.openai.com/v1/chat/completions", {
-                        method: "POST",
-                        headers: {
-                            "Content-Type": "application/json",
-                            Authorization: `Bearer ${api_key}`
-                        },
-                        body: JSON.stringify(ChatGPT)
-                    }).then(res => res.json()).then(data => {
-                        var reply = data.choices[0].message.content;
+                    askGemini(prompt, 0).then(reply => {
                         console.log(reply);
                         editor.setContent(reply);
                     }).catch(error => {
-                        console.log("something went wrong");
+                        console.log("something went wrong", error);
+                        alert("Gemini Fehler: " + error.message);
                     })
                   },
                 });
-                editor.ui.registry.addButton("openAIBeautify", {
+                editor.ui.registry.addButton("aiBeautify", {
                   text: "umformulieren (AI)",
                   icon: "reload",
                   tooltip: "Ausgewählter Text neu formulieren (AI)",
                   enabled: true,
                   onAction: (_) => {
-                    const api_key = config.OPENAI_API_KEY != "" ? config.OPENAI_API_KEY : document.getElementById("protect-key").value;
                     const selection = tinymce.activeEditor.selection.getContent();
                     const prompt = "Bitte folgenden Produkttext auf Rechtschreibung prüfen und schöner Formulieren, ohne die Formatierung zu ändern. Aussagen dürfen nicht verändert werden. Der Produkttext sollte freundlich, informativ und nicht zu lange sein. Benutze bitte die Schweizer Rechtschreibung mit doppel-s  (ss) statt scharfem s (ß)\nInformationen für den Text:"+selection
-                    const ChatGPT = {
-                      model: "gpt-3.5-turbo",
-                      messages:[ { "role": "user", "content": prompt }],
-                      temperature: 1,
-                      max_tokens: 2000,
-                    };
-                    fetch("https://api.openai.com/v1/chat/completions", {
-                        method: "POST",
-                        headers: {
-                            "Content-Type": "application/json",
-                            Authorization: `Bearer ${api_key}`
-                        },
-                        body: JSON.stringify(ChatGPT)
-                    }).then(res => res.json()).then(data => {
-                        var reply = data.choices[0].message.content;
+                    askGemini(prompt, 1).then(reply => {
                         console.log(reply);
                         editor.selection.setContent(reply);
                     }).catch(error => {
-                        console.log("something went wrong");
+                        console.log("something went wrong", error);
+                        alert("Gemini Fehler: " + error.message);
                     })
                   },
                 });
-                editor.ui.registry.addButton("openAISummary", {
+                editor.ui.registry.addButton("aiSummary", {
                   text: "zusammenfassen (AI)",
                   icon: "vertical-align",
                   tooltip: "Zusammenfassen (AI)",
                   enabled: true,
                   onAction: (_) => {
-                    const api_key = config.OPENAI_API_KEY != "" ? config.OPENAI_API_KEY : document.getElementById("protect-key").value;
                     const selection = tinymce.activeEditor.getContent();
                     const prompt = "Bitte fasse folgenden Produkttext auf ungefähr 100 Wörter zusammen. Benutze bitte die Schweizer Rechtschreibung mit doppel-s  (ss) statt scharfem s (ß)\nInformationen für den Text:"+selection
-                    const ChatGPT = {
-                      model: "gpt-3.5-turbo",
-                      messages:[ { "role": "user", "content": prompt }],
-                      temperature: 0.4,
-                      max_tokens: 2000,
-                    };
-                    fetch("https://api.openai.com/v1/chat/completions", {
-                        method: "POST",
-                        headers: {
-                            "Content-Type": "application/json",
-                            Authorization: `Bearer ${api_key}`
-                        },
-                        body: JSON.stringify(ChatGPT)
-                    }).then(res => res.json()).then(data => {
-                        var reply = data.choices[0].message.content;
+                    askGemini(prompt, 0.4).then(reply => {
                         console.log(reply);
                         editor.setContent(reply);
                     }).catch(error => {
-                        console.log("something went wrong");
+                        console.log("something went wrong", error);
+                        alert("Gemini Fehler: " + error.message);
                     })
                   },
                 });
@@ -229,7 +214,7 @@
           activeTemplate: '',
           answer: '',
           copyButton: 'copy',
-          promtApiKey: config.OPENAI_API_KEY ? false : true
+          promtApiKey: config.GEMINI_API_KEY ? false : true
         }
       },
   mounted() {
