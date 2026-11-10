@@ -46,7 +46,7 @@
      </div>
       <div class="html-output">
         <div class="html-code" :class="{copied: copyButton != 'copy' }" >{{ description }}</div>
-        <button class="copy" @click="this.copyCode">{{ copyButton == 'copy' ? 'Code Kopieren' : 'ist Kopiert!' }}</button>
+        <button class="copy" @click="this.copyCode" hidden>{{ copyButton == 'copy' ? 'Code Kopieren' : 'ist Kopiert!' }}</button>
         <button class="copy" @click="this.writeCurrentTextToBase">{{ copyButton == 'copy' ? 'Text ins Comarch speichern, Basisnummer' : 'Gespeichert!' }}</button>
       </div>
       <div class="load-product">
