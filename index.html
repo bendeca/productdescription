@@ -152,7 +152,7 @@
                   enabled: true,
                   onAction: (_) => {
                     const selection = tinymce.activeEditor.getContent();
-                    const prompt = "Bitte generiere aus folgenden informationen einen strukurierten Produkttext in HTML Format mit der folgenden Struktur:\n<h2>Auf den Punkt gebracht</h2>\n<p>##in 1-2 Sätzen die wichtigsten eigentschften kurz zusammengefasst. ##</p>\n<h2>##Produkttitel## im Detail</h2>\n##produktdetails, 1-2 Paragraphe lang mit den wichtigsten Informationen. erklärung der Eigentschaften und freundlich formuliert##\n<h3>Wichtigste Eigenschaften</h3>\n## eine <ul> liste mit den wichtigsten Eigenschaften\nDer Produkttext sollte freundlich, informativ und nicht zu lange sein. Benutze bitte die Schweizer Rechtschreibung mit doppel-s  (ss) statt scharfem s (ß)\nInformationen für den Text:"+selection
+                    const prompt = `Bitte generiere aus folgenden informationen einen strukurierten Produkttext in HTML Format mit der folgenden Struktur:\n<h2>Auf den Punkt gebracht</h2>\n<p>##in 1-2 Sätzen die wichtigsten eigentschften kurz zusammengefasst. ##</p>\n<h2>##Produkttitel## im Detail</h2>\n##produktdetails, 1-2 Paragraphe lang mit den wichtigsten Informationen. erklärung der Eigentschaften und freundlich formuliert##\n<h3>Wichtigste Eigenschaften</h3>\n## eine <ul> liste mit den wichtigsten Eigenschaften\nDer Produkttext sollte freundlich, informativ und nicht zu lange sein. Benutze bitte die Schweizer Rechtschreibung mit doppel-s  (ss) statt scharfem s (ß)\nInformationen für den Text:`+selection
                     askGemini(prompt, 0).then(reply => {
                         console.log(reply);
                         editor.setContent(reply);
@@ -169,7 +169,7 @@
                   enabled: true,
                   onAction: (_) => {
                     const selection = tinymce.activeEditor.selection.getContent();
-                    const prompt = "Bitte folgenden Produkttext auf Rechtschreibung prüfen und schöner Formulieren, ohne die Formatierung zu ändern. Aussagen dürfen nicht verändert werden. Der Produkttext sollte freundlich, informativ und nicht zu lange sein. Benutze bitte die Schweizer Rechtschreibung mit doppel-s  (ss) statt scharfem s (ß)\nInformationen für den Text:"+selection
+                    const prompt = `Bitte folgenden Produkttext auf Rechtschreibung prüfen und schöner Formulieren, ohne die Formatierung zu ändern. Aussagen dürfen nicht verändert werden. Der Produkttext sollte freundlich, informativ und nicht zu lange sein. Benutze bitte die Schweizer Rechtschreibung mit doppel-s  (ss) statt scharfem s (ß)\nInformationen für den Text:`+selection
                     askGemini(prompt, 1).then(reply => {
                         console.log(reply);
                         editor.selection.setContent(reply);
@@ -186,7 +186,7 @@
                   enabled: true,
                   onAction: (_) => {
                     const selection = tinymce.activeEditor.getContent();
-                    const prompt = "Bitte fasse folgenden Produkttext auf ungefähr 100 Wörter zusammen. Benutze bitte die Schweizer Rechtschreibung mit doppel-s  (ss) statt scharfem s (ß)\nInformationen für den Text:"+selection
+                    const prompt = `Bitte fasse folgenden Produkttext auf ungefähr 100 Wörter zusammen. Benutze bitte die Schweizer Rechtschreibung mit doppel-s  (ss) statt scharfem s (ß)\nInformationen für den Text:`+selection
                     askGemini(prompt, 0.4).then(reply => {
                         console.log(reply);
                         editor.setContent(reply);
