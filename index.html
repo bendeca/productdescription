@@ -91,6 +91,11 @@
     // optional: models to try if the main model is overloaded, e.g. ["gemini-3.1-flash-lite"]
     const GEMINI_FALLBACK_MODELS = config.GEMINI_FALLBACK_MODELS || [];
     const RETRY_STATUS = [429, 500, 503];
+    const SYSTEM_PROMPT = "Du bist ein Werkzeug, das Produkttexte für einen Online-Shop schreibt. " +
+      "Antworte AUSSCHLIESSLICH mit dem fertigen Ergebnis, das direkt in den Shop eingefügt wird. " +
+      "Keine Einleitung (z.B. \"Hier ist...\"), keine Erklärungen, keine Kommentare, keine Fragen, kein Schlusssatz. " +
+      "Verwende KEINE Markdown-Codeblöcke (```) und kein Markdown. " +
+      "Wenn HTML verlangt ist oder der Eingabetext HTML enthält, gib nur reines HTML zurück, beginnend direkt mit dem ersten HTML-Tag.";
     const sleep = ms => new Promise(r => setTimeout(r, ms));
 
     async function callGemini(model, prompt, temperature, api_key) {
@@ -102,7 +107,10 @@
         },
         body: JSON.stringify({
           model: model,
-          messages: [{ role: "user", content: prompt }],
+          messages: [
+            { role: "system", content: SYSTEM_PROMPT },
+            { role: "user", content: prompt }
+          ],
           temperature: temperature,
           max_tokens: 8000,
         })
@@ -113,8 +121,18 @@
         err.status = res.status;
         throw err;
       }
-      // strip ```html fences in case the model wraps its answer
-      return data.choices[0].message.content.replace(/^\s*```(?:html)?\s*/i, "").replace(/\s*```\s*$/, "");
+      return cleanReply(data.choices[0].message.content);
+    }
+
+    // removes intro/outro sentences and ``` code fences the model may add anyway
+    function cleanReply(text) {
+      const fenced = text.match(/```(?:html)?\s*([\s\S]*?)```/i);
+      if (fenced) text = fenced[1];
+      text = text.replace(/```(?:html)?/gi, "").trim();
+      const first = text.search(/<(h[1-6]|p|ul|ol|li|div|strong|b|em|br)\b/i);
+      const last = text.lastIndexOf(">");
+      if (first !== -1 && last > first) text = text.slice(first, last + 1);
+      return text.trim();
     }
 
     // tries the main model up to 3 times (waiting 2s, 4s), then each fallback model
@@ -183,7 +201,7 @@
                   enabled: true,
                   onAction: (_) => {
                     const selection = tinymce.activeEditor.getContent();
-                    const prompt = `Bitte generiere aus folgenden informationen einen strukurierten Produkttext in HTML Format mit der folgenden Struktur:\n<h2>Auf den Punkt gebracht</h2>\n<p>##in 1-2 Sätzen die wichtigsten eigentschften kurz zusammengefasst. ##</p>\n<h2>##Produkttitel## im Detail</h2>\n##produktdetails, 1-2 Paragraphe lang mit den wichtigsten Informationen. erklärung der Eigentschaften und freundlich formuliert##\n<h3>Wichtigste Eigenschaften</h3>\n## eine <ul> liste mit den wichtigsten Eigenschaften\nDer Produkttext sollte freundlich, informativ und nicht zu lange sein. Benutze bitte die Schweizer Rechtschreibung mit doppel-s  (ss) statt scharfem s (ß)\nInformationen für den Text:`+selection
+                    const prompt = `Bitte generiere aus folgenden informationen einen strukurierten Produkttext in HTML Format mit der folgenden Struktur:\n<h2>Auf den Punkt gebracht</h2>\n<p>##in 1-2 Sätzen die wichtigsten eigentschften kurz zusammengefasst. ##</p>\n<h2>##Produkttitel## im Detail</h2>\n##produktdetails, 1-2 Paragraphe lang mit den wichtigsten Informationen. erklärung der Eigentschaften und freundlich formuliert##\n<h3>Wichtigste Eigenschaften</h3>\n## eine <ul> liste mit den wichtigsten Eigenschaften\nDer Produkttext sollte freundlich, informativ und nicht zu lange sein. Benutze bitte die Schweizer Rechtschreibung mit doppel-s  (ss) statt scharfem s (ß)\nGib nur das HTML zurück, beginnend mit <h2>, ohne Einleitung und ohne Markdown-Codeblock.\nInformationen für den Text:`+selection
                     askGemini(prompt, 0).then(reply => {
                         console.log(reply);
                         editor.setContent(reply);
