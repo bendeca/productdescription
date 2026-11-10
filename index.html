@@ -205,6 +205,7 @@
                     askGemini(prompt, 0).then(reply => {
                         console.log(reply);
                         editor.setContent(reply);
+                        app.description = editor.getContent(); // update code block + text sent on save
                     }).catch(error => {
                         console.log("something went wrong", error);
                         alert("Gemini Fehler: " + error.message);
@@ -222,6 +223,7 @@
                     askGemini(prompt, 1).then(reply => {
                         console.log(reply);
                         editor.selection.setContent(reply);
+                        app.description = editor.getContent(); // update code block + text sent on save
                     }).catch(error => {
                         console.log("something went wrong", error);
                         alert("Gemini Fehler: " + error.message);
@@ -239,6 +241,7 @@
                     askGemini(prompt, 0.4).then(reply => {
                         console.log(reply);
                         editor.setContent(reply);
+                        app.description = editor.getContent(); // update code block + text sent on save
                     }).catch(error => {
                         console.log("something went wrong", error);
                         alert("Gemini Fehler: " + error.message);
