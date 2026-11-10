@@ -47,7 +47,7 @@
       <div class="html-output">
         <div class="html-code" :class="{copied: copyButton != 'copy' }" >{{ description }}</div>
         <button class="copy" @click="this.copyCode" hidden>{{ copyButton == 'copy' ? 'Code Kopieren' : 'ist Kopiert!' }}</button>
-        <button class="copy" @click="this.writeCurrentTextToBase" :disabled="saveState == 'saving'">{{ {idle: 'Text ins Comarch speichern, Basisnummer', saving: 'Speichert...', saved: 'Gespeichert!', error: 'Fehler beim Speichern'}[saveState] }}</button>
+        <button class="copy" @click="this.writeCurrentTextToBase" :disabled="saveState == 'saving'">{{ {idle: 'Text ins Comarch speichern' + (currentBaseProduct ? ', Basisnummer: ' + currentBaseProduct : ''), saving: 'Speichert...', saved: 'Gespeichert!', error: 'Fehler beim Speichern'}[saveState] }}</button>
       </div>
       <div class="load-product">
         <span>Produktnummer Eingeben: </span>
