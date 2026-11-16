@@ -35,8 +35,6 @@
       </div>
 
       <div class="text-input">
-      <div v-if=promtApiKey><label style="font-family: Arial, Helvetica, sans-serif; font-size: medium;">Add Gemini API key here</label>
-     <input type="text" id="protect-key"> </div>
 
           <editor 
               v-model="description" 
@@ -137,7 +135,8 @@
 
     // tries the main model up to 3 times (waiting 2s, 4s), then each fallback model
     async function askGemini(prompt, temperature) {
-      const api_key = config.GEMINI_API_KEY != "" ? config.GEMINI_API_KEY : document.getElementById("protect-key").value;
+      const api_key = config.GEMINI_API_KEY;
+      if (!api_key) throw new Error("GEMINI_API_KEY fehlt in env.js");
       const models = [GEMINI_MODEL, ...GEMINI_FALLBACK_MODELS];
       let lastError;
       document.body.style.cursor = "progress";
@@ -266,8 +265,7 @@
           activeTemplate: '',
           answer: '',
           copyButton: 'copy',
-          saveState: 'idle',
-          promtApiKey: config.GEMINI_API_KEY ? false : true
+          saveState: 'idle'
         }
       },
   mounted() {
@@ -295,7 +293,6 @@
       },
       getCurrentText: async function() {
         console.log(this.productNumber);
-        const api_key = config.POLYNORM_API_KEY != "" ? config.POLYNORM_API_KEY : document.getElementById("protect-key").value;
 
         return await fetch('https://helper.veloplus.ch/marketingtext/getText.php?item_id=' + this.productNumber, {
           method: 'GET',
